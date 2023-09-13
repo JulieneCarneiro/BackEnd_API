@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS "LIVROS" (
     "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
     "TITULO" varchar(100),
     "PRECO" DOUBLE(10),
-    "AUTOR" varchar(100),
+    "AUTORES" varchar(100),
     "GENEROS" varchar(100),
-    "EDITORA" varchar(100),
+    "EDITORAS" varchar(100),
     "IDIOMA" varchar(30)
 );
 `
@@ -29,17 +29,7 @@ const GENEROS_TABLE = `
 CREATE TABLE IF NOT EXISTS "GENEROS" (
     "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
     "LIVROS" varchar(100),
-    "ROMANCE" varchar(100),
-    "TERROR" varchar(100),
-    "COMEDIA" varchar(100),
-    "DRAMA" varchar(100),
-    "AVENTURA" varchar(100),
-    "AUTOAJUDA" varchar(100),
-    "COMUNICAO" varchar(100),
-    "ACADEMICOS" varchar(100),
-    "LGBT" varchar(100),
-    "ARTE" varchar(100),
-    "PROGRAMACAO" varchar(100)
+    "NOME" varchar(100)
 );
 `
 // Criação da tabela EDITORAS
@@ -72,7 +62,7 @@ CREATE TABLE IF NOT EXISTS "PAGAMENTO" (
 `
 // Criação da tabela ESTOQUE
 const ESTOQUE_TABLE = `
-CREATE TABLE IF NOT EXISTS "PAGAMENTO" (
+CREATE TABLE IF NOT EXISTS "ESTOQUE" (
     "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
     "LIVROS" varchar(99),
     "QUANTIDADE" varchar(10)
@@ -81,7 +71,7 @@ CREATE TABLE IF NOT EXISTS "PAGAMENTO" (
 
 /** Funções de aplicação da criação das tabelas usando o SQLite **/
 
-function criaTabelaLivros() {
+export function criaTabelaLivros() {
     Database.run(LIVROS_TABLE, (error) => {
         if (error) {
             console.log("Erro ao criar tabela de Livros")
@@ -90,9 +80,9 @@ function criaTabelaLivros() {
         }
     });
 }
-export { criaTabelaLivros }
 
-function criaTabelaAutores() {
+
+export function criaTabelaAutores() {
     Database.run(AUTORES_TABLE, (error) => {
         if (error) {
             console.log("Erro ao criar tabela dos Autores")
@@ -102,7 +92,8 @@ function criaTabelaAutores() {
     });
 }
 
-function criaTabelaGeneros() {
+
+export function criaTabelaGeneros() {
     Database.run(GENEROS_TABLE, (error) => {
         if (error) {
             console.log("Erro ao criar tabela dos Gêneros")
@@ -112,7 +103,8 @@ function criaTabelaGeneros() {
     });
 }
 
-function criaTabelaEditoras() {
+
+export function criaTabelaEditoras() {
     Database.run(EDITORAS_TABLE, (error) => {
         if (error) {
             console.log("Erro ao criar tabela das Editoras")
@@ -122,7 +114,8 @@ function criaTabelaEditoras() {
     });
 }
 
-function criaTabelaClientes() {
+
+export function criaTabelaClientes() {
     Database.run(CLIENTES_TABLE, (error) => {
         if (error) {
             console.log("Erro ao criar tabela dos Clientes")
@@ -132,7 +125,8 @@ function criaTabelaClientes() {
     });
 }
 
-function criaTabelaPagamento() {
+
+export function criaTabelaPagamento() {
     Database.run(PAGAMENTO_TABLE, (error) => {
         if (error) {
             console.log("Erro ao criar tabela dos Pagamentos")
@@ -142,7 +136,8 @@ function criaTabelaPagamento() {
     });
 }
 
-function criaTabelaEstoque() {
+
+export function criaTabelaEstoque() {
     Database.run(ESTOQUE_TABLE, (error) => {
         if (error) {
             console.log("Erro ao criar tabela dos Estoques")
