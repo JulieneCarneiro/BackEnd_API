@@ -5,19 +5,19 @@ import Database from "./Database.js";
 
 //Adicionando LIVROS
 const ADD_LIVROS_DATA = `
-INSERT INTO LIVROS (TITULO, PRECO, IDIOMA)
+INSERT INTO LIVROS (TITULO, PRECO, AUTORES, GENEROS, EDITORAS, IDIOMA)
 VALUES 
-    ('Eugênio Oliveira', 'eugenio.oliveira@bol.com.br', '2140028911'),
-    ('Olívia Ribeiro', 'olivia.ribeiro@gmail.com', '1140028922'),
-    ('Mirtes Faria Lima', 'mirtes_fl@yahoo.com', '3125214430')
+    ('O poder da leitura', '42.99', 'Carlos Duhigg', 'ACADEMICOS', 'Objetivo', 'Portugues'),
+    ('A deusa do desamor', '26.90', 'Julia ZZagonel', 'ROMANCE', 'AZT', 'Portugues'),
+    ('Tweet Cute', '41.90', 'Emma Liord', 'COMEDIA', 'Wednerday the books', 'Ingles')
 `
 //Adicionando LIVROS
 const ADD_AUTORES_DATA = `
 INSERT INTO LIVROS (NOME, PAIS)
 VALUES 
-    ('Eugênio Oliveira', 'Brasil'),
-    ('Olívia Ribeiro', 'Portugal'),
-    ('Mirtes Faria Lima', 'Estados Unidos')
+    ('Carlos Duhigg', 'Brasil'),
+    ('Julia ZZagonel', 'Brasil'),
+    ('Emma Liord', 'Estados Unidos')
 `
 
 
