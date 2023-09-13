@@ -90,6 +90,7 @@ function criaTabelaLivros() {
         }
     });
 }
+export { criaTabelaLivros }
 
 function criaTabelaAutores() {
     Database.run(AUTORES_TABLE, (error) => {

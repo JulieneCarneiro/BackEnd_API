@@ -36,6 +36,7 @@ function populaTabelaLivros() {
         }
     });
 }
+export { populaTabelaLivros }
 
 function populaTabelaAutores() {
     Database.run(ADD_AUTORES_DATA, (error) => {
