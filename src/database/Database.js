@@ -1,9 +1,9 @@
-/** Script de importação do banco **/
+/** Script de importação do banco e das funções de criação e população **/
 import sqlite3 from "sqlite3";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { criaTabelaLivros } from "./criarTabelas.js"
-import { populaTabelaLivros } from "./popularTabelas.js"
+import * as criaTabela from "./criarTabelas.js";
+import * as populaTabela from "./popularTabelas.js";
 
 //Torna as ações do SQLite legiveis no terminal
 sqlite3.verbose()
@@ -20,6 +20,12 @@ export default Database
 /** Roda as funções de criação de tabela e população em serie (Uma após a outra) **/
 
 Database.serialize(() => {
-    criaTabelaLivros();
-    populaTabelaLivros();
+    criaTabela.criaTabelaLivros();
+    populaTabela.populaTabelaLivros();
+
+    criaTabela.criaTabelaAutores();
+    populaTabela.populaTabelaAutores();
+
+    criaTabela.criaTabelaGeneros();
+    populaTabela.populaTabelaGeneros();
 })
