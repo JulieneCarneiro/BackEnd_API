@@ -28,4 +28,13 @@ Database.serialize(() => {
 
     criaTabela.criaTabelaGeneros();
     populaTabela.populaTabelaGeneros();
+
+    criaTabela.criaTabelaEditoras();
+    populaTabela.populaTabelaEditoras();
+
+    criaTabela.criaTabelaClientes();
+    populaTabela.populaTabelaClientes();
+
+    criaTabela.criaTabelaPedidos();
+    populaTabela.populaTabelaPedidos();
 })
