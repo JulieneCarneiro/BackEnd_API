@@ -1,5 +1,5 @@
 class Editoras{
-    constructor(nome, cnpj, email, telefone, endereço){
+    constructor(nome, email, telefone){
         this.nome = nome
         this.email = email
         this.telefone = telefone
