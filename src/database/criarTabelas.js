@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS "LIVROS" (
     "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
     "TITULO" varchar(100),
     "PRECO" DOUBLE(10),
-    "AUTORES" varchar(100),
-    "GENEROS" varchar(100),
-    "EDITORAS" varchar(100),
+    "AUTOR" varchar(100),
+    "GENERO" varchar(100),
+    "EDITORA" varchar(100),
     "IDIOMA" varchar(30)
 );
 `
@@ -51,21 +51,16 @@ CREATE TABLE IF NOT EXISTS "CLIENTES" (
     "ENDERECO" varchar(200)
 );
 `
-// Criação da tabela PAGAMENTO
-const PAGAMENTO_TABLE = `
-CREATE TABLE IF NOT EXISTS "PAGAMENTO" (
+// Criação da tabela PEDIDOS
+const PEDIDOS_TABLE = `
+CREATE TABLE IF NOT EXISTS "PEDIDOS" (
     "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "PIX" varchar(50),
-    "CREDITO" varchar(50),
-    "BOLETO" varchar(50)
-);
-`
-// Criação da tabela ESTOQUE
-const ESTOQUE_TABLE = `
-CREATE TABLE IF NOT EXISTS "ESTOQUE" (
-    "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "LIVROS" varchar(99),
-    "QUANTIDADE" varchar(10)
+    "NUM_PEDIDO" varchar(6),
+    "CLIENTE" varchar(100),
+    "TITULO" varchar(100),
+    "QUANTIDADE" varchar(6),
+    "VALOR" varchar(10),
+    "PAGAMENTO" varchar(15)
 );
 `
 
@@ -81,7 +76,6 @@ export function criaTabelaLivros() {
     });
 }
 
-
 export function criaTabelaAutores() {
     Database.run(AUTORES_TABLE, (error) => {
         if (error) {
@@ -91,7 +85,6 @@ export function criaTabelaAutores() {
         }
     });
 }
-
 
 export function criaTabelaGeneros() {
     Database.run(GENEROS_TABLE, (error) => {
@@ -103,7 +96,6 @@ export function criaTabelaGeneros() {
     });
 }
 
-
 export function criaTabelaEditoras() {
     Database.run(EDITORAS_TABLE, (error) => {
         if (error) {
@@ -113,7 +105,6 @@ export function criaTabelaEditoras() {
         }
     });
 }
-
 
 export function criaTabelaClientes() {
     Database.run(CLIENTES_TABLE, (error) => {
@@ -125,27 +116,16 @@ export function criaTabelaClientes() {
     });
 }
 
-
-export function criaTabelaPagamento() {
-    Database.run(PAGAMENTO_TABLE, (error) => {
+export function criaTabelaPedidos() {
+    Database.run(PEDIDOS_TABLE, (error) => {
         if (error) {
-            console.log("Erro ao criar tabela dos Pagamentos")
+            console.log("Erro ao criar tabela dos Pedidos")
         } else {
-            console.log("Tabela Pagamentos criada com sucesso")
+            console.log("Tabela Pedidos criada com sucesso")
         }
     });
 }
 
-
-export function criaTabelaEstoque() {
-    Database.run(ESTOQUE_TABLE, (error) => {
-        if (error) {
-            console.log("Erro ao criar tabela dos Estoques")
-        } else {
-            console.log("Tabela Estoques criada com sucesso")
-        }
-    });
-}
 
 
 
