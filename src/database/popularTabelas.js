@@ -7,33 +7,33 @@ import Database from "./Database.js";
 const ADD_LIVROS_DATA = `
 INSERT INTO LIVROS (TITULO, PRECO, AUTOR, GENERO, EDITORA, IDIOMA)
 VALUES 
-    ('O poder da leitura', '42.99', 'Carlos Duhigg', 'ACADEMICOS', 'Objetivo', 'Portugues'),
-    ('A deusa do desamor', '26.90', 'Julia ZZagonel', 'ROMANCE', 'AZT', 'Portugues'),
-    ('Tweet Cute', '41.90', 'Emma Liord', 'COMEDIA', 'Wednerday the books', 'Ingles')
+    ('O poder da leitura', '42.90', '1', 'ACADEMICOS', '1', 'Portugues'),
+    ('A deusa do desamor', '26.90', '2', 'ROMANCE', '2', 'Portugues'),
+    ('Tweet Cute', '41.90', '3', 'COMEDIA', '3', 'Ingles')
 `
 //Adicionando AUTORES
 const ADD_AUTORES_DATA = `
 INSERT INTO AUTORES (NOME, PAIS, LIVROS)
 VALUES 
-    ('Carlos Duhigg', 'Brasil', ''),
-    ('Julia ZZagonel', 'Brasil', ''),
-    ('Emma Liord', 'Estados Unidos', '')
+    ('Carlos Duhigg', 'Brasil', '1'),
+    ('Julia ZZagonel', 'Brasil', '2'),
+    ('Emma Liord', 'Estados Unidos', '3')
 `
 //Adicionando GENEROS
 const ADD_GENEROS_DATA = `
 INSERT INTO GENEROS (LIVROS, NOME)
 VALUES 
-    ('', 'ROMANCE'),
-    ('', 'COMEDIA'),
-    ('', 'DRAMA')
+    ('2', 'ROMANCE'),
+    ('3', 'COMEDIA'),
+    ('1', 'ACADEMICOS')
 `
 //Adicionando EDITORAS
 const ADD_EDITORAS_DATA = `
 INSERT INTO EDITORAS (NOME, EMAIL, TELEFONE)
 VALUES 
-    ('', 'objetivo.editora@gmail.com', '41 3235-6669'),
-    ('', 'aztedit@hotmail.com', '11 3007-4789'),
-    ('', 'wednerday.ed.books@yahoo.com', '1 408 323-6581')
+    ('Objetivo', 'objetivo.editora@gmail.com', '41 3235-6669'),
+    ('AZT', 'aztedit@hotmail.com', '11 3007-4789'),
+    ('Wednerday the books', 'wednerday.ed.books@yahoo.com', '1 408 323-6581')
 `
 //Adicionando CLIENTES
 const ADD_CLIENTES_DATA = `
@@ -42,16 +42,18 @@ VALUES
     ('Robson Ademir', 'robinho123@gmail.com', '41 99519-8777', 'Rua Trajetoria Triste, 6669 - Bairro: Depressão'),
     ('Michel Teló', 'michael159telozin@hotmail.com', '11 99878-5564', 'Rua Leonardo Sistemico, 523 - Bairro: Sitio Cercado'),
     ('Joelma Kalipiçon', 'jojokali@yahoo.com', '41 99356-1478', 'Rua Jose Arruda, 398 - Bairro: Solidão'),
-    ('Léo Stronda', 'leleostrondinha@yahoo.com', '24 95366-9275', 'Rua Leoncio ovelha, 666 - Bairro: CIC Loko')
+    ('Léo Stronda', 'leleostrondinha@yahoo.com', '24 95366-9275', 'Rua Leoncio ovelha, 666 - Bairro: CIC Loko'),
+    ('Silvio Santinho', 'sil002@gmail.com', '11 98654-2145', 'Rua Trejano Reis, 350 - Bairro: Centro')
 `
 //Adicionando PEDIDOS
 const ADD_PEDIDOS_DATA = `
 INSERT INTO PEDIDOS (NUM_PEDIDO, CLIENTE, TITULO, QUANTIDADE, VALOR, PAGAMENTO)
 VALUES 
-    ('123', 'Robson Ademir', 'O poder da leitura', '1', '26.66', 'PIX'),
-    ('124', 'Michel Teló, 'A deusa do desamor', '2', '26.66', 'Credito'),
-    ('125', 'Joelma Kalipiçon', 'Tweet Cute', '1', '26.66', 'PIX'),
-    ('126', 'Léo Stronda', 'Tweet Cute', '1', '26.66', 'Boleto')
+    ('123', '1', 'O poder da leitura', '1', '42.90', 'PIX'),
+    ('124', '2', 'A deusa do desamor', '2', '53.80', 'Credito'),
+    ('125', '3', 'Tweet Cute', '1', '41.90', 'PIX'),
+    ('126', '4', 'Tweet Cute', '1', '41.90', 'Boleto'),
+    ('127', '5', 'O poder da leitura', '3', '128.70', 'Débito')
 `
 
 
@@ -82,6 +84,7 @@ export function populaTabelaAutores() {
 export function populaTabelaGeneros() {
     Database.run(ADD_GENEROS_DATA, (error) => {
         if (error) {
+            console.log(error.message)
             console.log("Erro ao popular tabela de Gêneros")
         }
         else {
