@@ -37,4 +37,5 @@ Database.serialize(() => {
 
     criaTabela.criaTabelaPedidos();
     populaTabela.populaTabelaPedidos();
+    populaTabela.populaTabelaPedidos();
 })
