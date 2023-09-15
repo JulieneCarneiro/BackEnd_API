@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS "LIVROS" (
     "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
     "TITULO" varchar(100),
     "PRECO" DOUBLE(10),
-    "AUTOR" varchar(100),
+    "AUTOR" INT,
     "GENERO" varchar(100),
-    "EDITORA" varchar(100),
+    "EDITORA" INT,
     "IDIOMA" varchar(30)
 );
 `
@@ -21,14 +21,14 @@ CREATE TABLE IF NOT EXISTS "AUTORES" (
     "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
     "NOME" varchar(100),
     "PAIS" varchar(100),
-    "LIVROS" varchar(100)
+    "LIVROS" INT
 );
 `
 // Criação da tabela GENEROS
 const GENEROS_TABLE = `
 CREATE TABLE IF NOT EXISTS "GENEROS" (
     "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "LIVROS" varchar(100),
+    "LIVROS" INT,
     "NOME" varchar(100)
 );
 `
@@ -56,7 +56,7 @@ const PEDIDOS_TABLE = `
 CREATE TABLE IF NOT EXISTS "PEDIDOS" (
     "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
     "NUM_PEDIDO" varchar(6),
-    "CLIENTE" varchar(100),
+    "CLIENTE" INT,
     "TITULO" varchar(100),
     "QUANTIDADE" varchar(6),
     "VALOR" varchar(10),
