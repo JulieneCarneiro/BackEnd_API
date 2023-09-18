@@ -38,7 +38,7 @@ class ClientesDAO extends DAO{
       */
     static async buscarClientePorId(id) {
       const query = `
-      SELECT * FROM CLIENTES WHERE ID_CLIENTE = ?
+      SELECT * FROM CLIENTES WHERE ID = ?
       `;
       const result = await this.buscarPorId(query, [id]);
       return result;
@@ -50,7 +50,7 @@ class ClientesDAO extends DAO{
       */
     static async deletarClientePorId(id) {
       const query = `
-      DELETE FROM CLIENTES WHERE ID_CLIENTE = ?
+      DELETE FROM CLIENTES WHERE ID = ?
       `;
       await this.deletarPorId(query, [id]);
     }
@@ -63,7 +63,7 @@ class ClientesDAO extends DAO{
     */
     static async AtualizarClientePorId(id, data) {
       const query = `
-      UPDATE CLIENTES SET NOME = ?, EMAIL = ?, TELEFONE = ? WHERE ID_CLIENTE = ?
+      UPDATE CLIENTES SET NOME = ?, EMAIL = ?, TELEFONE = ? WHERE ID = ?
       `;
       const values = [data.nome, data.email, data.telefone, id];
       await this.atualizarPorId(query, values);
