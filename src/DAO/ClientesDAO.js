@@ -23,7 +23,11 @@ class ClientesDAO extends DAO{
      * @returns {Array<Clientes>}
      */
     static async buscarTodosOsClientes() {
-     
+      const query = `
+      SELECT * FROM CLIENTES
+      `;
+      const result = await this.buscar(query);
+      return result;
     }
 
 
@@ -33,7 +37,11 @@ class ClientesDAO extends DAO{
       * @returns {Clientes}
       */
     static async buscarClientePorId(id) {
-      
+      const query = `
+      SELECT * FROM CLIENTES WHERE ID_CLIENTE = ?
+      `;
+      const result = await this.buscarPorId(query, [id]);
+      return result;
     }
 
     /**
@@ -41,17 +49,24 @@ class ClientesDAO extends DAO{
       * @param {string} id 
       */
     static async deletarClientePorId(id) {
-    
+      const query = `
+      DELETE FROM CLIENTES WHERE ID_CLIENTE = ?
+      `;
+      await this.deletarPorId(query, [id]);
     }
 
 
     /**
-     * ATUALIZA cliente por ID
+     * ATUAL cliente por ID
      * @param {string} id 
      * @param {any} data 
     */
     static async AtualizarClientePorId(id, data) {
-     
+      const query = `
+      UPDATE CLIENTES SET NOME = ?, EMAIL = ?, TELEFONE = ? WHERE ID_CLIENTE = ?
+      `;
+      const values = [data.nome, data.email, data.telefone, id];
+      await this.atualizarPorId(query, values);
 }
 
 }
