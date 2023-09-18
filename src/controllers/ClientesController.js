@@ -61,45 +61,29 @@ class ClientesController {
           .json({ error: true, message: `Servidor indisponível no momento` });
       }
     });
+
+/**
+ * ATUALIZA por ID                        //NÃO SEI COMO ISSO FUNCIONA LALALALALALALLALAALALALALA
+ */
+app.put("/clientes/:id", (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+  const clientePut = new Clientes(body.nome, body.email, body.telefone, body.endereco);
+  ClientesDAO.AtualizarClientePorId(id, clientePut)
+    .then((result) => {
+      if (result) {
+        res.status(204).json();
+      } else {
+        res.status(404).json({ error: true, message: `Cliente não encontrado para o id ${id}` }); ///CORRIGIR ISSO DEPOIS
+      }
+    })
+    .catch((error) => {
+      res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
+    });
+});
+
+
   }}
 
 export default ClientesController;
-// class ClientesController {
-
-//   static rotas(app) {
-
-//     app.get("/clientes", (req, res)=>{
-//       res.status(200).json(Clientes)
-//     })
-
-//       app.post("/clientes", (req, res)=>{
-//         const body = Object.values(req.body)
-//         const clienteModelado = new Clientes(...body)
-//         ClientesDAO.inserirCliente(clienteModelado)
-//         res.status(200).json({
-//             error: false,
-//             message: "DEU BOA FAMILIA"
-//         })
-//     })
-
-//     //   app.post("/cliente", async (req, res)=>{
-//     //     const body = Object.values(req.body)
-//     //     const isValid = ValidacaoServices.validaCamposClientes(...body)
-//     //     if(isValid){
-//     //         const clienteModelado = new Clientes(...body)
-//     //         try {
-//     //             await ClientesDAO.inserirCliente(clienteModelado)
-//     //             res.status(201).json({
-//     //                 error: false,
-//     //                 message: "Usuário criado com sucesso"
-//     //             })
-//     //             console.log("paçoca")
-//     //         } catch (error) {
-//     //             res.status(503).json({error: true, message: `Servidor indisponível no momento`})
-//     //         }
-//     //     } else {
-//     //         res.status(400).json({error: true, message: `Campos invalidos`})
-//     //     }
-//     // })
-//   }
 
