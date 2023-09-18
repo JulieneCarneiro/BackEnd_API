@@ -2,7 +2,7 @@ import Database from "../database/Database.js";
 
 class DAO{
     /**
-     * INSERE
+     * INSERE DADOS
      * @param {string} query 
      * @param {Array<any>} data 
      */
@@ -19,18 +19,16 @@ class DAO{
     }
 
     /**
-     * BUSCA
-     * @param {string} entidade 
+     * BUSCA DADOS
+     * @param {string} query
      * @returns {any}
      */
-    static buscar(entidade){
-        const query = `
-        SELECT * FROM ${entidade};
-        `
+    static buscar(query){
         return new Promise((resolve, reject)=>{
             Database.all(query, (error, rows)=>{
                 if(error){
                     console.log(error)
+                    reject(error)
                 } else {
                     resolve(rows)
                 }
@@ -39,33 +37,63 @@ class DAO{
     }
 
     /**
-     * BUSCA por ID
-     * @param {string} entidade 
-     * @param {string} id 
+     * BUSCA pelo ID
+     * @param {string} query 
+     * @param {id} id 
      * @returns {any}
      */
-    static buscarPorId(entidade, id){
-        return Database[entidade][id]
+    static buscarPorId(query, id) {
+        return new Promise((resolve, reject) => {
+        Database.get(query, id, (error, row) => {
+            if (error) {
+                  console.error(error);
+                  reject(error);
+              } else {
+                  resolve(row);
+              }
+          });
+      });
     }
+
 
     /**
      * DELETA por ID
-     * @param {string} entidade 
-     * @param {string} id 
+     * @param {string} query 
+     * @param {id} id 
+     * @returns {Promise<void>}
      */
-    static deletarPorId(entidade, id){
-        delete Database[entidade][id]
+    static deletarPorId(query, id) {
+      return new Promise((resolve, reject) => {
+          Database.run(query, id, function (error) {
+              if (error) {
+                  console.error(error);
+                  reject(error);
+              } else {
+                  resolve();
+              }
+          });
+      });
     }
 
     /**
-     * ATUALIZA por ID
-     * @param {string} entidade 
+     * UPDATE por ID
+     * @param {string} query 
      * @param {string} id 
-     * @param {any} data 
+     * @returns {Promise<void>}
      */
-    static atualizarPorId(entidade, id, data){
-        Database[entidade][id] = data
+    static atualizarPorId(query, id) {
+      return new Promise((resolve, reject) => {
+          Database.run(query, id, function (error) {
+              if (error) {
+                  console.error(error);
+                  reject(error);
+              } else {
+                  resolve();
+              }
+          });
+      });
     }
+
 }
 
 export default DAO;
