@@ -15,22 +15,52 @@ class AutoresController{
           res.status(200).json(autores)
       })
         
-    //   //BUSCAR
-    //     app.get("/autores", (req, res)=>{
-    //         // const autores = AutoresMetodos.buscarTodosOsAutores() // NÃO FOI CRIADO AINDA
-    //         res.status(200).json('ta rodano')
-    //     })
+      
+    /**
+     * BUSCA pelo ID                        ///////////
+     */
+    app.get("/autores/:id", async (req, res) => {
+      const id = req.params.id;
+      const resposta = await AutoresDAO.buscarAutorPorId(id);
+      if (resposta) {
+        res.status(200).json(resposta);
+      } else {
+        res
+          .status(404)
+          .json({
+            error: true,
+            message: `Autor com o id ${id} não encontrado`,
+          });
+      }
+    });
+    /**    
+    //* DELETA por ID                      ///////////SEM VALIDAÇÃO TA FUNCIONANDO --- MAS DA PRA MELHORAR A RESPOSTA
+    */
+    
+   app.delete("/autores/:id", async (req, res) => {
+     const id = req.params.id;
+     AutoresDAO.deletarAutorPorId(id);
+     res.status(200).json({ error: false });
+   });
 
-    //     //INSERIR
-    //     app.post("/autores", (req, res)=>{
-    //         const body = Object.values(req.body)
-    //         const autorModelado = new Autores(...body)
-    //         AutoresMetodos.inserirAutor(autorModelado) // NÃO FOI CRIADO AINDA
-    //         res.status(200).json({
-    //             error: false,
-    //             message: "Autor inserido com sucesso!"
-    //         })
-    //     })
+   /**
+     * INSERE                           ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
+     */
+   app.post("/autores", async (req, res) => {
+    const body = Object.values(req.body);
+    const autorModelado = new Autores(...body);
+    try {
+      await AutoresDAO.inserirAutor(autorModelado);
+      res.status(201).json({
+        error: false,
+        message: "Autor inserido com sucesso!",
+      });
+    } catch (error) {
+      res
+        .status(503)
+        .json({ error: true, message: `Servidor indisponível no momento` });
     }
-}
+  });
+  }}
+
 export default AutoresController
