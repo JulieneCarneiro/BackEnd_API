@@ -40,7 +40,7 @@ class ClientesController {
     app.delete("/clientes/:id", async (req, res) => {
       const id = req.params.id;
       ClientesDAO.deletarClientePorId(id);
-      res.status(200).json({ error: false });
+      res.status(200).json({ error: false, message: `Cliente excluído com sucesso!` });
     });
 
     /**
@@ -58,18 +58,18 @@ class ClientesController {
       } catch (error) {
         res
           .status(503)
-          .json({ error: true, message: `Servidor indisponível no momento` });
+          .json({ error: true, message: `Servidor indisponível no momento DEU ERRO PORRA` }); ///tira isso aqui
       }
     });
 
 /**
  * ATUALIZA por ID                        //NÃO SEI COMO ISSO FUNCIONA LALALALALALALLALAALALALALA
  */
-app.put("/clientes/:id", (req, res) => {
+app.put("/clientes/:id", async(req, res) => {
   const id = req.params.id;
   const body = req.body;
   const clientePut = new Clientes(body.nome, body.email, body.telefone, body.endereco);
-  ClientesDAO.AtualizarClientePorId(id, clientePut)
+  await ClientesDAO.AtualizarClientePorId(id, clientePut)
     .then((result) => {
       if (result) {
         res.status(204).json();
