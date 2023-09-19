@@ -17,7 +17,7 @@ class AutoresController{
         
       
     /**
-     * BUSCA pelo ID                        ///////////
+     * BUSCA pelo ID                        ///////////SEM VALIDAÇÃO, FUNCIONANDOOOOOOOOOOOOOOOOOOOO
      */
     app.get("/autores/:id", async (req, res) => {
       const id = req.params.id;

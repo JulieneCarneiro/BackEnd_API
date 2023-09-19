@@ -1,6 +1,6 @@
-import Clientes from "../models/Clientes.js"; // NÃO UTILIZADO AINDA
+import Clientes from "../models/Clientes.js"; 
 import ClientesDAO from "../DAO/ClientesDAO.js";
-import ValidacaoServices from "../../services/ValidacaoServices.js";
+//import ValidacaoServices from "../../services/ValidacaoServices.js"; // NÃO UTILIZADO AINDA, PARTE DO LUCIO
 
 class ClientesController {
   /**
@@ -44,7 +44,7 @@ class ClientesController {
     });
 
     /**
-     * INSERE                           ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
+     * INSERE                           ///////////SEM VALIDAÇÃO TA FUNCIONANDO
      */
     app.post("/clientes", async (req, res) => {
       const body = Object.values(req.body);
@@ -58,7 +58,7 @@ class ClientesController {
       } catch (error) {
         res
           .status(503)
-          .json({ error: true, message: `Servidor indisponível no momento DEU ERRO PORRA` }); ///tira isso aqui
+          .json({ error: true, message: `Servidor indisponível no momento DEU ERRO PORRA` }); ///tira isso aqui PFV
       }
     });
 
