@@ -40,7 +40,7 @@ class AutoresController{
    app.delete("/autores/:id", async (req, res) => {
      const id = req.params.id;
      AutoresDAO.deletarAutorPorId(id);
-     res.status(200).json({ error: false });
+     res.status(200).json({ error: false, message: `Autor deletado com sucesso!`  });
    });
 
    /**
