@@ -10,12 +10,25 @@ class AutoresController{
       /**
        * BUSCA TUDO 
        */
-      app.get("/autores", async (req, res)=>{
-          const autores = await AutoresDAO.buscarTodosOsAutores()
-          res.status(200).json(autores)
-      })
+      app.get("/autores", async (req, res) => {
+        try {
+          const autores = await AutoresDAO.buscarTodosOsAutores();
+          if (autores) {
+            res.status(200).json(autores);
+          } else {
+            res.status(404).json({
+              error: true,
+              message: "Nenhum autor encontrado",
+            });
+          }
+        } catch (error) {
+          res.status(500).json({
+            error: true,
+            message: "Ocorreu um erro ao buscar os autores",
+          });
+        }
+      });
         
-      
     /**
      * BUSCA pelo ID                        ///////////SEM VALIDAÇÃO, FUNCIONANDOOOOOOOOOOOOOOOOOOOO
      */
@@ -36,11 +49,11 @@ class AutoresController{
     /**    
     //* DELETA por ID                      ///////////SEM VALIDAÇÃO TA FUNCIONANDO --- MAS DA PRA MELHORAR A RESPOSTA
     */
-    
+  
    app.delete("/autores/:id", async (req, res) => {
      const id = req.params.id;
      AutoresDAO.deletarAutorPorId(id);
-     res.status(200).json({ error: false, message: `Autor deletado com sucesso!`  });
+     res.status(200).json({ error: false, message: `Autor deletado com sucesso!`});
    });
 
    /**
