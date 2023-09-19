@@ -77,19 +77,20 @@ class ClientesController {
       }
     });
 
-/**
- * ATUALIZA por ID                        //NÃO SEI COMO ISSO FUNCIONA LALALALALALALLALAALALALALA
- */
+// /**
+//  * ATUALIZA por ID                        //NÃO SEI COMO ISSO FUNCIONA LALALALALALALLALAALALALALA
+//  */
 app.put("/clientes/:id", async(req, res) => {
   const id = req.params.id;
   const body = req.body;
-  const clientePut = new Clientes(body.nome, body.email, body.telefone, body.endereco);
+  // res.status(500).json(message);
+  const clientePut = new Clientes(body.NOME, body.EMAIL, body.TELEFONE, body.ENDERECO);
   await ClientesDAO.AtualizarClientePorId(id, clientePut)
     .then((result) => {
       if (result) {
         res.status(204).json();
       } else {
-        res.status(404).json({ error: true, message: `Cliente não encontrado para o id ${id}` }); ///CORRIGIR ISSO DEPOIS
+        res.status(404).json({ error: true, message: `Erro interno.` });
       }
     })
     .catch((error) => {
@@ -97,8 +98,7 @@ app.put("/clientes/:id", async(req, res) => {
     });
 });
 
-
-  }}
+}}
 
 export default ClientesController;
 
