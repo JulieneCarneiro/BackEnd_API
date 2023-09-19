@@ -1,34 +1,34 @@
-import Autores from "../models/Autores.js" // NÃO UTILIZADO AINDA
-import AutoresDAO from "../DAO/AutoresDAO.js"
+import Autores from "../models/Autores.js"; // NÃO UTILIZADO AINDA
+import AutoresDAO from "../DAO/AutoresDAO.js";
 
-class AutoresController{
+class AutoresController {
   /**
    * Método para centralização de rotas no controller
-   * @param {Express} app 
+   * @param {Express} app
    */
-  static rotas(app){
-      /**
-       * BUSCA TUDO 
-       */
-      app.get("/autores", async (req, res) => {
-        try {
-          const autores = await AutoresDAO.buscarTodosOsAutores();
-          if (autores) {
-            res.status(200).json(autores);
-          } else {
-            res.status(404).json({
-              error: true,
-              message: "Nenhum autor encontrado",
-            });
-          }
-        } catch (error) {
-          res.status(500).json({
+  static rotas(app) {
+    /**
+     * BUSCA TUDO
+     */
+    app.get("/autores", async (req, res) => {
+      try {
+        const autores = await AutoresDAO.buscarTodosOsAutores();
+        if (autores) {
+          res.status(200).json(autores);
+        } else {
+          res.status(404).json({
             error: true,
-            message: "Ocorreu um erro ao buscar os autores",
+            message: "Nenhum autor encontrado",
           });
         }
-      });
-        
+      } catch (error) {
+        res.status(500).json({
+          error: true,
+          message: "Ocorreu um erro ao buscar os autores",
+        });
+      }
+    });
+
     /**
      * BUSCA pelo ID                        ///////////SEM VALIDAÇÃO, FUNCIONANDOOOOOOOOOOOOOOOOOOOO
      */
@@ -38,42 +38,43 @@ class AutoresController{
       if (resposta) {
         res.status(200).json(resposta);
       } else {
-        res
-          .status(404)
-          .json({
-            error: true,
-            message: `Autor com o id ${id} não encontrado`,
-          });
+        res.status(404).json({
+          error: true,
+          message: `Autor com o id ${id} não encontrado`,
+        });
       }
     });
     /**    
     //* DELETA por ID                      ///////////SEM VALIDAÇÃO TA FUNCIONANDO --- MAS DA PRA MELHORAR A RESPOSTA
     */
-  
-   app.delete("/autores/:id", async (req, res) => {
-     const id = req.params.id;
-     AutoresDAO.deletarAutorPorId(id);
-     res.status(200).json({ error: false, message: `Autor deletado com sucesso!`});
-   });
 
-   /**
-     * INSERE                           ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
-     */
-   app.post("/autores", async (req, res) => {
-    const body = Object.values(req.body);
-    const autorModelado = new Autores(...body);
-    try {
-      await AutoresDAO.inserirAutor(autorModelado);
-      res.status(201).json({
-        error: false,
-        message: "Autor inserido com sucesso!",
-      });
-    } catch (error) {
+    app.delete("/autores/:id", async (req, res) => {
+      const id = req.params.id;
+      AutoresDAO.deletarAutorPorId(id);
       res
-        .status(503)
-        .json({ error: true, message: `Servidor indisponível no momento` });
-    }
-  });
-  }}
+        .status(200)
+        .json({ error: false, message: `Autor deletado com sucesso!` });
+    });
 
-export default AutoresController
+    /**
+     * INSERE                          
+     */
+    app.post("/autores", async (req, res) => {
+      const body = Object.values(req.body);
+      const autorModelado = new Autores(...body);
+      try {
+        await AutoresDAO.inserirAutor(autorModelado);
+        res.status(201).json({
+          error: false,
+          message: "Autor inserido com sucesso!",
+        });
+      } catch (error) {
+        res
+          .status(503)
+          .json({ error: true, message: `Servidor indisponível no momento` });
+      }
+    });
+  }
+}
+
+export default AutoresController;
