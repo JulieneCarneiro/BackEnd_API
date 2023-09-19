@@ -12,8 +12,23 @@ class ClientesController {
      * BUSCA TODOS os CLIENTES
      */
     app.get("/clientes", async (req, res) => {
+      try {
       const clientes = await ClientesDAO.buscarTodosOsClientes();
-      res.status(200).json(clientes);
+      res.status(200).json(clientes);} catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({
+            error: true,
+            message: "Nenhum autor encontrado", //mas dai aqui tem q ter outra msg
+            details: error.message,            // detalhes do erro?? pensar nisso!!!!!!!!
+          });
+        } else {
+          
+          res.status(500).json({
+            error: true,
+            message: "Ocorreu um erro ao buscar os clientes.",
+          });
+        }
+      }
     });
 
     /**
