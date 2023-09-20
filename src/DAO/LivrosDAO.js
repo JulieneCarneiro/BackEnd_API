@@ -33,9 +33,9 @@ class LivrosDAO extends DAO{
     /**
       * BUSCA livros por ID
       * @param {string} id 
-      * @returns {Generos}
+      * @returns {Livros}
       */
-    static async buscarLivrosPorId(id) {
+    static async buscarLivroPorId(id) {
       const query = `
       SELECT * FROM LIVROS WHERE ID = ?
       `;
@@ -43,16 +43,21 @@ class LivrosDAO extends DAO{
       return result;
     }
 
-     /**
+
+
+    /**
       * BUSCA livros por GENERO
       * @param {string} genero 
       * @returns {Generos}
       */
-     static async buscarLivrosPorGenero(genero) {
+    ///////////com validaçãozinha
+    static async buscarLivrosPorGenero(genero) {
+      // Converte o valor do argumento e o valor da coluna para letras minúsculas
+      genero = genero.toLowerCase();
       const query = `
-      SELECT * FROM LIVROS WHERE GENERO = ?
+        SELECT * FROM LIVROS WHERE LOWER(GENERO) LIKE ?
       `;
-      const result = await this.buscarPorId(query, [genero]);
+      const result = await this.buscarPorId(query, [`%${genero}%`]); // Usa LIKE para correspondência parcial
       return result;
     }
 
@@ -74,11 +79,11 @@ class LivrosDAO extends DAO{
      * @param {string} id 
      * @param {any} data 
     */
-    static async AtualizarLivroPorId(id, data) {
+    static async atualizarLivroPorId(id, data) {
       const query = `
-      UPDATE GENEROS SET TITULO, PRECO, AUTOR, GENERO, EDITORA, IDIOMA WHERE ID = ?
+      UPDATE LIVROS SET TITULO = ?, PRECO = ? WHERE ID = ?
       `;
-      const values = [data.livros, data.nome, id];
+      const values = [data.TITULO, data.PRECO, id];
       await this.atualizarPorId(query, values);
 }}
 
