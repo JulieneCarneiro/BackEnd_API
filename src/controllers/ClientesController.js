@@ -1,6 +1,6 @@
-import Clientes from "../models/Clientes.js"; // NÃO UTILIZADO AINDA
+import Clientes from "../models/Clientes.js"; 
 import ClientesDAO from "../DAO/ClientesDAO.js";
-import ValidacaoServices from "../../services/ValidacaoServices.js";
+//import ValidacaoServices from "../../services/ValidacaoServices.js"; // NÃO UTILIZADO AINDA, PARTE DO LUCIO
 
 class ClientesController {
   /**
@@ -12,8 +12,23 @@ class ClientesController {
      * BUSCA TODOS os CLIENTES
      */
     app.get("/clientes", async (req, res) => {
+      try {
       const clientes = await ClientesDAO.buscarTodosOsClientes();
-      res.status(200).json(clientes);
+      res.status(200).json(clientes);} catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({
+            error: true,
+            message: "Nenhum autor encontrado", //mas dai aqui tem q ter outra msg
+            details: error.message,            // detalhes do erro?? pensar nisso!!!!!!!!
+          });
+        } else {
+          
+          res.status(500).json({
+            error: true,
+            message: "Ocorreu um erro ao buscar os clientes.",
+          });
+        }
+      }
     });
 
     /**
@@ -40,11 +55,11 @@ class ClientesController {
     app.delete("/clientes/:id", async (req, res) => {
       const id = req.params.id;
       ClientesDAO.deletarClientePorId(id);
-      res.status(200).json({ error: false });
+      res.status(200).json({ error: false, message: `Cliente excluído com sucesso!` });
     });
 
     /**
-     * INSERE                           ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
+     * INSERE                           ///////////SEM VALIDAÇÃO TA FUNCIONANDO
      */
     app.post("/clientes", async (req, res) => {
       const body = Object.values(req.body);
@@ -58,48 +73,32 @@ class ClientesController {
       } catch (error) {
         res
           .status(503)
-          .json({ error: true, message: `Servidor indisponível no momento` });
+          .json({ error: true, message: `Servidor indisponível no momento DEU ERRO PORRA` }); ///tira isso aqui PFV
       }
     });
-  }}
+
+// /**
+//  * ATUALIZA por ID                        //NÃO SEI COMO ISSO FUNCIONA LALALALALALALLALAALALALALA
+//  */
+app.put("/clientes/:id", async(req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+  // res.status(500).json(message);
+  const clientePut = new Clientes(body.NOME, body.EMAIL, body.TELEFONE, body.ENDERECO);
+  await ClientesDAO.AtualizarClientePorId(id, clientePut)
+    .then((result) => {
+      if (result) {
+        res.status(204).json();
+      } else {
+        res.status(404).json({ error: true, message: `Erro interno.` });
+      }
+    })
+    .catch((error) => {
+      res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
+    });
+});
+
+}}
 
 export default ClientesController;
-// class ClientesController {
-
-//   static rotas(app) {
-
-//     app.get("/clientes", (req, res)=>{
-//       res.status(200).json(Clientes)
-//     })
-
-//       app.post("/clientes", (req, res)=>{
-//         const body = Object.values(req.body)
-//         const clienteModelado = new Clientes(...body)
-//         ClientesDAO.inserirCliente(clienteModelado)
-//         res.status(200).json({
-//             error: false,
-//             message: "DEU BOA FAMILIA"
-//         })
-//     })
-
-//     //   app.post("/cliente", async (req, res)=>{
-//     //     const body = Object.values(req.body)
-//     //     const isValid = ValidacaoServices.validaCamposClientes(...body)
-//     //     if(isValid){
-//     //         const clienteModelado = new Clientes(...body)
-//     //         try {
-//     //             await ClientesDAO.inserirCliente(clienteModelado)
-//     //             res.status(201).json({
-//     //                 error: false,
-//     //                 message: "Usuário criado com sucesso"
-//     //             })
-//     //             console.log("paçoca")
-//     //         } catch (error) {
-//     //             res.status(503).json({error: true, message: `Servidor indisponível no momento`})
-//     //         }
-//     //     } else {
-//     //         res.status(400).json({error: true, message: `Campos invalidos`})
-//     //     }
-//     // })
-//   }
 
