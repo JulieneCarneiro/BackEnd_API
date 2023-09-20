@@ -1,6 +1,6 @@
 import Clientes from "../models/Clientes.js"; 
 import ClientesDAO from "../DAO/ClientesDAO.js";
-//import ValidacaoServices from "../../services/ValidacaoServices.js"; // NÃO UTILIZADO AINDA, PARTE DO LUCIO
+import ValidacaoServices from "../services/ClientesServices.js" //ENFIA NO CU
 
 class ClientesController {
   /**
@@ -31,23 +31,41 @@ class ClientesController {
       }
     });
 
-    /**
-     * BUSCA pelo ID                        ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
-     */
+
     app.get("/clientes/:id", async (req, res) => {
       const id = req.params.id;
-      const resposta = await ClientesDAO.buscarClientePorId(id);
-      if (resposta) {
-        res.status(200).json(resposta);
+      const isValid = await ValidacaoServices.validarExistencia(id) //CONFORME SINTAXE DO CODIGO DO LEO, VERIFICAR COM LUCIO
+      if (isValid) {
+          const resposta = await ClientesDAO.buscarClientePorId(id)
+          if (resposta) { 
+              res.status(200).json(resposta);
+          } else {
+              res.status(404).json({ error: true, message: `Cliente com o id ${id} não encontrado` });
+          }
       } else {
-        res
-          .status(404)
-          .json({
-            error: true,
-            message: `Cliente com o id ${id} não encontrado`,
-          });
+          res.status(400).json({ error: true, message: `id inválido: ${id}` });
       }
     });
+
+
+    // /**
+    //  * BUSCA pelo ID                        ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
+    //  */
+    // app.get("/clientes/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const resposta = await ClientesDAO.buscarClientePorId(id);
+    //   if (resposta) {
+    //     res.status(200).json(resposta);
+    //   } else {
+    //     res
+    //       .status(404)
+    //       .json({
+    //         error: true,
+    //         message: `Cliente com o id ${id} não encontrado`,
+    //       });
+    //   }
+    // });
+
 
     /**
      * DELETA por ID                      ///////////SEM VALIDAÇÃO TA FUNCIONANDO --- MAS DA PRA MELHORAR A RESPOSTA
@@ -73,29 +91,26 @@ class ClientesController {
       } catch (error) {
         res
           .status(503)
-          .json({ error: true, message: `Servidor indisponível no momento DEU ERRO PORRA` }); ///tira isso aqui PFV
+          .json({ error: true, message: `Servidor indisponível no momento`}); 
       }
     });
 
 // /**
 //  * ATUALIZA por ID                        //NÃO SEI COMO ISSO FUNCIONA LALALALALALALLALAALALALALA
 //  */
-app.put("/clientes/:id", async(req, res) => {
+app.put("/clientes/:id", async (req, res) => {
   const id = req.params.id;
   const body = req.body;
-  // res.status(500).json(message);
-  const clientePut = new Clientes(body.NOME, body.EMAIL, body.TELEFONE, body.ENDERECO);
-  await ClientesDAO.AtualizarClientePorId(id, clientePut)
-    .then((result) => {
-      if (result) {
-        res.status(204).json();
+  const exists = await ValidacaoServices.validarExistenciaCliente(id);
+  // const isValid = ValidacaoServices.validaCamposUnidade(body.NOME, body.EMAIL, body.TELEFONE, body.ENDERECO);
+
+      if (exists) {
+          const unidadeModelada = new Clientes(body.NOME, body.EMAIL, body.TELEFONE, body.ENDERECO);
+          ClientesDAO.atualizarClientePorId(id, unidadeModelada);
+          res.status(204).json({ error: false, message: `Cliente inserido com sucesso`});
       } else {
-        res.status(404).json({ error: true, message: `Erro interno.` });
+          res.status(400).json({ error: true, message: `Campos inválidos` });
       }
-    })
-    .catch((error) => {
-      res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
-    });
 });
 
 }}

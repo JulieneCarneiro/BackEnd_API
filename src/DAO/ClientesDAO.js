@@ -61,7 +61,7 @@ class ClientesDAO extends DAO{
      * @param {string} id 
      * @param {any} data 
     */
-    static async AtualizarClientePorId(id, data) {
+    static async atualizarClientePorId(id, data) {
       const query = `
       UPDATE CLIENTES SET NOME = ?, EMAIL = ?, TELEFONE = ? WHERE ID = ?
       `;
