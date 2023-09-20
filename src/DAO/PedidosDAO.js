@@ -35,13 +35,27 @@ class PedidosDAO extends DAO{
       * @param {string} id 
       * @returns {Generos}
       */
-    static async buscarPedidosPorId(id) {
+    static async buscarPedidoPorId(id) {
       const query = `
       SELECT * FROM PEDIDOS WHERE ID = ?
       `;
       const result = await this.buscarPorId(query, [id]);
       return result;
     }
+
+    /**
+      * BUSCA pedidos por pelo PAGAMENTO
+      * @param {string} id 
+      * @returns {Generos}
+      */
+    static async buscarPedidosPorPagamento(id) {
+      const query = `
+      SELECT * FROM PEDIDOS WHERE PAGAMENTO = ?
+      `;
+      const result = await this.buscarPorId(query, [id]);
+      return result;
+    }
+
 
     /**
       * DELETA pedidos por ID
@@ -60,7 +74,7 @@ class PedidosDAO extends DAO{
      * @param {string} id 
      * @param {any} data 
     */
-    static async AtualizarPedidoPorId(id, data) {
+    static async atualizarPedidoPorId(id, data) {
       const query = `
       UPDATE PEDIDOS SET NUM_PEDIDO, CLIENTE, TITULO, QUANTIDADE, VALOR, PAGAMENTO , WHERE ID = ? 
       `;
