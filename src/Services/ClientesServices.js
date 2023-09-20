@@ -1,7 +1,7 @@
 
 import ClientesDAO from "../DAO/ClientesDAO.js"
 
-class ValidacaoServices{
+class ValidacaoServicesCliente{
     /**
      * Método que valida a existencia do usuário na base de dados
      * @param {string} id 
@@ -57,7 +57,7 @@ class ValidacaoServices{
     }
 }
 
-export default ValidacaoServices
+export default ValidacaoServicesCliente
 
 
 // class ValidacaoClientes {
