@@ -30,34 +30,17 @@ class ValidacaoServicesPedidos{
      * @param {string} pagamento 
      * @returns {boolean}
      */
-    static validaPagamento(pagamento){
-        return typeof pagamento == "string" && pagamento.length > 2 && pagamento== "Boleto"||"PIX"||"Credito"||"Débito"
-    }
+    static validaPagamento(pagamento) {
+        const opcoesValidas = ["Boleto", "PIX", "Credito", "Débito"];
+        return opcoesValidas.includes(pagamento);
+      }
 
-    /**
-     * Método para validação de email
-     * @param {string} email 
-     * @returns {boolean}
-     */
-    static validaEmail(email){
-        return typeof email == "string" && email.length > 2
-    }
 
-    /**
-     * Método para validação de telefone
-     * @param {string} telefone 
-     * @returns {boolean}
-     */
-    static validaTelefone(telefone){
-        const telefoneInt = parseInt(telefone)
-        return typeof telefone == "string" && telefone.length > 9 && telefone == telefoneInt
-    }
 
     /**
      * Método para validação de todos os campos fornecidos pelo cliente na entidade usuário
-     * @param {string} nome 
-     * @param {string} email 
-     * @param {string} telefone 
+     * @param {string} titulo 
+     * @param {string} pagamento 
      * @returns 
      */
     static validaCamposPedido(titulo, pagamento){
@@ -67,6 +50,20 @@ class ValidacaoServicesPedidos{
 }
 
 export default ValidacaoServicesPedidos
+
+  
+    
+  
+    //   if (!this.validaTitulo(titulo)) {
+    //     errors.push("O campo 'TITULO' deve ser uma string com pelo menos 3 caracteres.");
+    //   }
+  
+    //   if (!this.validaPagamento(pagamento)) {
+    //     errors.push("O campo 'PAGAMENTO' deve ser uma das opções válidas: 'Boleto', 'PIX', 'Credito' ou 'Débito'.");
+    //   }
+  
+    //   return errors;
+   
 
 // class ValidacaoLivros {
 //     // Método para validar a inserção de dados de livro
