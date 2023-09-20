@@ -43,6 +43,20 @@ class LivrosDAO extends DAO{
       return result;
     }
 
+     /**
+      * BUSCA livros por GENERO
+      * @param {string} genero 
+      * @returns {Generos}
+      */
+     static async buscarLivrosPorGenero(genero) {
+      const query = `
+      SELECT * FROM LIVROS WHERE GENERO = ?
+      `;
+      const result = await this.buscarPorId(query, [genero]);
+      return result;
+    }
+
+
     /**
       * DELETA livro por ID
       * @param {string} id 
