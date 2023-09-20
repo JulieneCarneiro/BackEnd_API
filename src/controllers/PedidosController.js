@@ -31,10 +31,31 @@ class PedidosController {
       }
     });
 
-/**
-     * BUSCA pelo genero                        ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
+    /**
+     * BUSCA pelo ID                    
      */
-app.get("/pedidos/:pagamento", async (req, res) => {
+    app.get("/pedidos/:id", async (req, res) => {
+      const id = req.params.id;
+    
+      try {
+        // Verifique se o pedido existe
+        const pedidoExistente = await PedidosDAO.buscarPedidoPorId(id);
+    
+        if (!pedidoExistente) {
+          return res.status(404).json({ error: true, message: `Pedido não encontrado para o id ${id}` });
+        }
+    
+        res.status(200).json(pedidoExistente);
+      } catch (error) {
+        res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
+      }
+    });
+    
+
+/**
+     * BUSCA pelo pagto                       ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
+     */
+app.get("/pedidos/pagamento/:pagamento", async (req, res) => {
   const pagamento = req.params.pagamento;
   const resposta = await PedidosDAO.buscarPedidosPorPagamento(pagamento);
   if (resposta) {
@@ -49,33 +70,60 @@ app.get("/pedidos/:pagamento", async (req, res) => {
   }
 });
 
+
+app.get("/pedidos/num_pedido/:num_pedido", 
+async (req, res) => {
+  const num_pedido = req.params.num_pedido; // Usar req.params.num_pedido em letras minúsculas
+  const resposta = await PedidosDAO.buscarPedidosPorNumero(num_pedido);
+  if (resposta) {
+    res.status(200).json(resposta);
+  } else {
+    res
+      .status(404)
+      .json({
+        error: true,
+        message: `Não encontramos pedidos com o número do pedido ${num_pedido}`,
+      });
+  }
+});
+
 /**
  * DELETA por ID                      ///////////SEM VALIDAÇÃO TA FUNCIONANDO --- MAS DA PRA MELHORAR A RESPOSTA
  */
-app.delete("/livros/:id", async (req, res) => {
+app.delete("/pedidos/:id", async (req, res) => {
   const id = req.params.id;
-  LivrosDAO.deletarLivroPorId(id);
+  PedidosDAOedidos.deletarPedidoPorId(id);
   res.status(200).json({ error: false, message: `Livro excluído com sucesso!` });
 });
 
 /**
  * INSERE                           ///////////SEM VALIDAÇÃO TA FUNCIONANDO
  */
-app.post("/clientes", async (req, res) => {
-  const body = Object.values(req.body);
-  const clienteModelado = new Clientes(...body);
+ // Rota para inserir um novo produto
+  app.post("/pedidos", async (req, res) => {
+  const body = req.body;
+
+  if (!ValidacaoServicesPedidos.validaCamposPedido(body.TITULO, body.PAGAMENTO)) {
+    return res.status(400).json({ error: true, message: `Campos inválidos` });
+  }
   try {
-    await ClientesDAO.inserirCliente(clienteModelado);
-    res.status(201).json({
-      error: false,
-      message: "Cliente inserido com sucesso!",
-    });
+    const exists = await ValidacaoServicesPedidos.validarExistenciaPedido(body.ID);
+    if (exists) {
+      const pedidoModelado = new Pedidos(body.ID, body.NUM_PEDIDO, body.CLIENTE, body.TITULO, body.QUANTIDADE, body.VALOR, body.PAGAMENTO);
+      await PedidosDAO.inserirPedido(pedidoModelado);
+      res.status(201).json({
+        error: false,
+        message: "Pedido criado com sucesso!"
+      });
+    } else {
+      res.status(400).json({ error: true, message: `Pedido não encontrado` });
+    }
   } catch (error) {
-    res
-      .status(503)
-      .json({ error: true, message: `Servidor indisponível no momento`}); 
+    console.error("Erro no servidor:", error);
+    res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
   }
 });
+
 
 // /**
 //  * ATUALIZA por ID                        //NÃO SEI COMO ISSO FUNCIONA LALALALALALALLALAALALALALA
@@ -83,16 +131,22 @@ app.post("/clientes", async (req, res) => {
 app.put("/pedidos/:id", async (req, res) => {
   const id = req.params.id;
   const body = req.body;
-  const exists = await ValidacaoServicesPedidos.validarExistenciaPedido(id);
-  // const isValid = ValidacaoServices.validaCamposUnidade(body.NOME, body.EMAIL, body.TELEFONE, body.ENDERECO);
 
-      if (exists) {
-          const unidadeModelada = new Pedidos(body.CLIENTE, body.TITULO, body.QUANTIDADE, body.VALOR, body.PAGAMENTO);
-          PedidosDAO.atualizarPedidoPorId(id, unidadeModelada);
-          res.status(204).json({ error: false, message: `Cliente inserido com sucesso`});
-      } else {
-          res.status(400).json({ error: true, message: `Campos inválidos` });
-      }
+  try {
+    const exists = await ValidacaoServicesPedidos.validarExistenciaPedido(id);
+
+    if (exists) {
+      const unidadeModelada = new Pedidos(body.CLIENTE, body.TITULO, body.QUANTIDADE, body.VALOR, body.PAGAMENTO);
+      PedidosDAO.atualizarPedidoPorId(id, unidadeModelada);
+      res.status(204).json({ error: false, message: `Cliente inserido com sucesso` });
+    } else {
+      console.error("Erro no servidor:", error);
+      res.status(400).json({ error: true, message: `Campos inválidos` });
+    }
+  } catch (error) {
+    console.error("Erro no servidor:", error);
+    res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
+  }
 });
 
 }}
