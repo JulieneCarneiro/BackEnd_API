@@ -9,7 +9,11 @@ INSERT INTO LIVROS (TITULO, PRECO, AUTOR, GENERO, EDITORA, IDIOMA)
 VALUES 
     ('O poder da leitura', '42.90', '1', 'ACADEMICOS', '1', 'Portugues'),
     ('A deusa do desamor', '26.90', '2', 'ROMANCE', '2', 'Portugues'),
-    ('Tweet Cute', '41.90', '3', 'COMEDIA', '3', 'Ingles')
+    ('Tweet Cute', '41.90', '3', 'COMEDIA', '3', 'Ingles'),
+    ('O desfiladeiro da morte', '55.00', '1', 'TERROR', '1', 'Portugues'),
+    ('O Exorcista', '85.50', '2', 'TERROR', '2', 'Portugues'),
+    ('O mistério dos irmãos Swiths', '25.50', '2', 'DRAMA', '1', 'Portugues'),
+    ('Duas vidas de um cachorro', '74.95', '1', 'DRAMA', '1', 'Portugues')
 `
 //Adicionando AUTORES
 const ADD_AUTORES_DATA = `
@@ -25,7 +29,9 @@ INSERT INTO GENEROS (LIVROS, NOME)
 VALUES 
     ('2', 'ROMANCE'),
     ('3', 'COMEDIA'),
-    ('1', 'ACADEMICOS')
+    ('1', 'ACADEMICOS'),
+    ('4', 'TERROR'),
+    ('5', 'DRAMA')
 `
 //Adicionando EDITORAS
 const ADD_EDITORAS_DATA = `
