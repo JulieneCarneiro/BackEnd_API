@@ -85,6 +85,20 @@ class LivrosDAO extends DAO{
       `;
       const values = [data.TITULO, data.PRECO, id];
       await this.atualizarPorId(query, values);
-}}
+    }
 
+/**
+   * Busca um livro pelo título.
+   * @param {string} titulo 
+   * @returns {Livros | null}
+   */
+static async buscarLivroPorTitulo(titulo) {
+  const query = `
+    SELECT * FROM LIVROS WHERE TITULO = ?
+  `;
+  const result = await this.buscarPorId(query, [titulo]);
+  return result;
+}
+
+}
 export default LivrosDAO;
