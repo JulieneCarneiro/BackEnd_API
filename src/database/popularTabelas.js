@@ -53,13 +53,13 @@ VALUES
 `
 //Adicionando PEDIDOS
 const ADD_PEDIDOS_DATA = `
-INSERT INTO PEDIDOS (NUM_PEDIDO, CLIENTE, TITULO, QUANTIDADE, VALOR, PAGAMENTO)
+INSERT INTO PEDIDOS (CLIENTE, TITULO, QUANTIDADE, VALOR, PAGAMENTO)
 VALUES 
-    ('123', '1', 'O poder da leitura', '1', '42.90', 'PIX'),
-    ('124', '2', 'A deusa do desamor', '2', '53.80', 'Credito'),
-    ('125', '3', 'Tweet Cute', '1', '41.90', 'PIX'),
-    ('126', '4', 'Tweet Cute', '1', '41.90', 'Boleto'),
-    ('127', '5', 'O poder da leitura', '3', '128.70', 'Débito')
+    ( '1', 'O poder da leitura', '1', '42.90', 'PIX'),
+    ( '2', 'A deusa do desamor', '2', '53.80', 'Credito'),
+    ( '3', 'Tweet Cute', '1', '41.90', 'PIX'),
+    ( '4', 'Tweet Cute', '1', '41.90', 'Boleto'),
+    ( '5', 'O poder da leitura', '3', '128.70', 'Débito')
 `
 
 

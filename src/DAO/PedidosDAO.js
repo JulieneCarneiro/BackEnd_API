@@ -10,7 +10,7 @@ class PedidosDAO extends DAO{
     static async inserirPedido(data){
         const dataValues = Object.values(data)
         const query = `
-        INSERT INTO PEDIDOS (NUM_PEDIDO, CLIENTE, TITULO, QUANTIDADE, VALOR, PAGAMENTO) VALUES (?,?,?,?,?,?)
+        INSERT INTO PEDIDOS (ID, CLIENTE, TITULO, QUANTIDADE, VALOR, PAGAMENTO) VALUES (?,?,?,?,?,?)
         `
         const result = await this.inserir(query, dataValues)
         return result
@@ -55,18 +55,18 @@ class PedidosDAO extends DAO{
       return result;
     }
 
-      /**
-      * BUSCA pedidos por pelo NUMERO
-      * @param {string} num_pedido 
-      * @returns {Pedidos}
-      */
-      static async buscarPedidosPorNumero(num_pedido) {
-        const query = `
-        SELECT * FROM PEDIDOS WHERE NUM_PEDIDO = ?
-        `;
-        const result = await this.buscarPorId(query, [num_pedido]);
-        return result;
-      }
+      // /**
+      // * BUSCA pedidos por pelo NUMERO
+      // * @param {string} num_pedido 
+      // * @returns {Pedidos}
+      // */
+      // static async buscarPedidosPorNumero(num_pedido) {
+      //   const query = `
+      //   SELECT * FROM PEDIDOS WHERE NUM_PEDIDO = ?
+      //   `;
+      //   const result = await this.buscarPorId(query, [num_pedido]);
+      //   return result;
+      // }
   
 
 
@@ -91,10 +91,10 @@ class PedidosDAO extends DAO{
     static async atualizarPedidoPorId(id, data) {
       const query = `
         UPDATE PEDIDOS 
-        SET NUM_PEDIDO = ?, CLIENTE = ?, TITULO = ?, QUANTIDADE = ?, VALOR = ?, PAGAMENTO = ?
+        SET  CLIENTE = ?, TITULO = ?, QUANTIDADE = ?, VALOR = ?, PAGAMENTO = ?
         WHERE ID = ?
       `;
-      const values = [data.NUM_PEDIDO, data.CLIENTE, data.TITULO, data.QUANTIDADE, data.VALOR, data.PAGAMENTO, id];
+      const values = [data.CLIENTE, data.TITULO, data.QUANTIDADE, data.VALOR, data.PAGAMENTO, id];
       await this.atualizarPorId(query, values);
     }
   }

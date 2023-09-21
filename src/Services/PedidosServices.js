@@ -1,5 +1,6 @@
 
 import PedidosDAO from "../DAO/PedidosDAO.js"
+import LivrosDAO from "../DAO/LivrosDAO.js"
 
 class ValidacaoServicesPedidos{
     /**
@@ -26,6 +27,17 @@ class ValidacaoServicesPedidos{
     }
 
     /**
+   * Método de validação de título para verificar se o título já existe no banco de dados.
+   * @param {string} titulo 
+   * @returns {boolean}
+   */
+    static async tituloExisteNoBancoDeDados(titulo) {
+    // Consulte o banco de dados para verificar se o título já existe
+    const livro = await LivrosDAO.buscarLivroPorTitulo(titulo);
+    return livro !== null;
+  }
+
+    /**
      * Método de validação de pagamento
      * @param {string} pagamento 
      * @returns {boolean}
@@ -44,7 +56,7 @@ class ValidacaoServicesPedidos{
      * @returns 
      */
     static validaCamposPedido(titulo, pagamento){
-        const isValid = this.validaTitulo(titulo) && this.validaPagamento(pagamento)
+        const isValid = this.validaTitulo(titulo) && this.validaPagamento(pagamento) && this.tituloExisteNoBancoDeDados(titulo)
         return isValid
     }
 }
