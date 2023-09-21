@@ -1,4 +1,4 @@
-import Autores from "../models/Autores.js"; // NÃO UTILIZADO AINDA
+import Autores from "../models/Autores.js"; 
 import AutoresDAO from "../DAO/AutoresDAO.js";
 
 class AutoresController {
@@ -30,7 +30,7 @@ class AutoresController {
     });
 
     /**
-     * BUSCA pelo ID                        ///////////SEM VALIDAÇÃO, FUNCIONANDOOOOOOOOOOOOOOOOOOOO
+     * BUSCA pelo ID                        
      */
     app.get("/autores/:id", async (req, res) => {
       const id = req.params.id;
@@ -45,7 +45,7 @@ class AutoresController {
       }
     });
     /**    
-    //* DELETA por ID                      ///////////SEM VALIDAÇÃO TA FUNCIONANDO --- MAS DA PRA MELHORAR A RESPOSTA
+    //* DELETA por ID                      ///////////DA PRA MELHORAR A RESPOSTA
     */
 
     app.delete("/autores/:id", async (req, res) => {

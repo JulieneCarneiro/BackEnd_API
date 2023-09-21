@@ -31,9 +31,7 @@ class LivrosController {
       }
     });
 
-/**
-     * BUSCA pelo ID                        ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
-     */
+
 app.get("/livros/:id", async (req, res) => {
   const id = req.params.id;
   const resposta = await LivrosDAO.buscarLivroPorId(id);

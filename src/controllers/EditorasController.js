@@ -1,4 +1,4 @@
-import Editoras from "../models/Editoras.js"; // NÃO UTILIZADO AINDA
+import Editoras from "../models/Editoras.js"; 
 import EditorasDAO from "../DAO/EditorasDAO.js";
 
 class EditorasController {
@@ -7,6 +7,7 @@ class EditorasController {
    * @param {Express} app
    */
   static rotas(app) {
+    
     /**
      * BUSCA TUDO
      */
@@ -16,7 +17,7 @@ class EditorasController {
     });
 
     /**
-     * BUSCA pelo ID                        ///////////
+     * BUSCA pelo ID                      
      */
     app.get("/editoras/:id", async (req, res) => {
       const id = req.params.id;
@@ -32,7 +33,7 @@ class EditorasController {
     });
 
     /**    
-    //* DELETA por ID                      ///////////SEM VALIDAÇÃO TA FUNCIONANDO --- MAS DA PRA MELHORAR A RESPOSTA
+    //* DELETA por ID                     
     */
     app.delete("/editoras/:id", async (req, res) => {
       const id = req.params.id;
@@ -41,7 +42,7 @@ class EditorasController {
     });
 
     /**
-     * INSERE                           ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
+     * INSERE                      
      */
     app.post("/editoras", async (req, res) => {
       const body = Object.values(req.body);
