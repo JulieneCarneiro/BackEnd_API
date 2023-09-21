@@ -1,6 +1,6 @@
 import Clientes from "../models/Clientes.js"; 
 import ClientesDAO from "../DAO/ClientesDAO.js";
-import ValidacaoServices from "../services/ClientesServices.js" //ENFIA NO CU
+import ValidacaoServicesCliente from "../services/ClientesServices.js"
 
 class ClientesController {
   /**
@@ -34,7 +34,7 @@ class ClientesController {
 
     app.get("/clientes/:id", async (req, res) => {
       const id = req.params.id;
-      const isValid = await ValidacaoServices.validarExistencia(id) //CONFORME SINTAXE DO CODIGO DO LEO, VERIFICAR COM LUCIO
+      const isValid = await ValidacaoServicesCliente.validarExistenciaCliente(id)
       if (isValid) {
           const resposta = await ClientesDAO.buscarClientePorId(id)
           if (resposta) { 
@@ -46,26 +46,6 @@ class ClientesController {
           res.status(400).json({ error: true, message: `id inválido: ${id}` });
       }
     });
-
-
-    // /**
-    //  * BUSCA pelo ID                        ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
-    //  */
-    // app.get("/clientes/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const resposta = await ClientesDAO.buscarClientePorId(id);
-    //   if (resposta) {
-    //     res.status(200).json(resposta);
-    //   } else {
-    //     res
-    //       .status(404)
-    //       .json({
-    //         error: true,
-    //         message: `Cliente com o id ${id} não encontrado`,
-    //       });
-    //   }
-    // });
-
 
     /**
      * DELETA por ID                      ///////////SEM VALIDAÇÃO TA FUNCIONANDO --- MAS DA PRA MELHORAR A RESPOSTA
@@ -96,12 +76,12 @@ class ClientesController {
     });
 
 // /**
-//  * ATUALIZA por ID                        //NÃO SEI COMO ISSO FUNCIONA LALALALALALALLALAALALALALA
+//  * ATUALIZA por ID                 
 //  */
 app.put("/clientes/:id", async (req, res) => {
   const id = req.params.id;
   const body = req.body;
-  const exists = await ValidacaoServices.validarExistenciaCliente(id);
+  const exists = await ValidacaoServicesCliente.validarExistenciaCliente(id);
   // const isValid = ValidacaoServices.validaCamposUnidade(body.NOME, body.EMAIL, body.TELEFONE, body.ENDERECO);
 
       if (exists) {
@@ -111,6 +91,40 @@ app.put("/clientes/:id", async (req, res) => {
       } else {
           res.status(400).json({ error: true, message: `Campos inválidos` });
       }
+});
+
+app.patch("/clientes/:id", async (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+
+  try {
+    // Recupere o cliente existente do banco de dados
+    const clienteExistente = await ClientesDAO.buscarClientePorId(id);
+
+    if (!clienteExistente) {
+      return res.status(404).json({ error: true, message: `Cliente não encontrado para o id ${id}` });
+    }
+
+    // Atualize apenas as propriedades fornecidas na solicitação
+    if (body.NOME) {
+      clienteExistente.EMAIL = body.NOME;
+    }
+    if (body.EMAIL) {
+      clienteExistente.EMAIL = body.EMAIL;
+    }
+    if (body.TELEFONE) {
+      clienteExistente.TELEFONE = body.TELEFONE;
+    }
+    if (body.ENDERECO) {
+      clienteExistente.ENDERECO = body.ENDERECO;
+    }
+    
+    await ClientesDAO.atualizarClientePorId(id, clienteExistente);
+
+    res.status(204).json();
+  } catch (error) {
+    res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
+  }
 });
 
 }}
