@@ -38,7 +38,7 @@ class PedidosController {
       const id = req.params.id;
     
       try {
-        // Verifique se o pedido existe
+        // Verifica se o pedido existe
         const pedidoExistente = await PedidosDAO.buscarPedidoPorId(id);
     
         if (!pedidoExistente) {
@@ -53,7 +53,7 @@ class PedidosController {
     
 
 /**
-     * BUSCA pelo pagto                       ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
+     * BUSCA pelo pagto               
      */
 app.get("/pedidos/pagamento/:pagamento", async (req, res) => {
   const pagamento = req.params.pagamento;
@@ -70,36 +70,18 @@ app.get("/pedidos/pagamento/:pagamento", async (req, res) => {
   }
 });
 
-
-app.get("/pedidos/num_pedido/:num_pedido", 
-async (req, res) => {
-  const num_pedido = req.params.num_pedido; // Usar req.params.num_pedido em letras minúsculas
-  const resposta = await PedidosDAO.buscarPedidosPorNumero(num_pedido);
-  if (resposta) {
-    res.status(200).json(resposta);
-  } else {
-    res
-      .status(404)
-      .json({
-        error: true,
-        message: `Não encontramos pedidos com o número do pedido ${num_pedido}`,
-      });
-  }
-});
-
 /**
  * DELETA por ID                      ///////////SEM VALIDAÇÃO TA FUNCIONANDO --- MAS DA PRA MELHORAR A RESPOSTA
  */
 app.delete("/pedidos/:id", async (req, res) => {
   const id = req.params.id;
-  PedidosDAOedidos.deletarPedidoPorId(id);
+  PedidosDAO.deletarPedidoPorId(id);
   res.status(200).json({ error: false, message: `Livro excluído com sucesso!` });
 });
 
 /**
- * INSERE                           ///////////SEM VALIDAÇÃO TA FUNCIONANDO
+ * INSERE              
  */
- // Rota para inserir um novo produto
   app.post("/pedidos", async (req, res) => {
   const body = req.body;
 
@@ -109,7 +91,7 @@ app.delete("/pedidos/:id", async (req, res) => {
   try {
     const exists = await ValidacaoServicesPedidos.validarExistenciaPedido(body.ID);
     if (exists) {
-      const pedidoModelado = new Pedidos(body.ID, body.NUM_PEDIDO, body.CLIENTE, body.TITULO, body.QUANTIDADE, body.VALOR, body.PAGAMENTO);
+      const pedidoModelado = new Pedidos(body.ID, body.CLIENTE, body.TITULO, body.QUANTIDADE, body.VALOR, body.PAGAMENTO);
       await PedidosDAO.inserirPedido(pedidoModelado);
       res.status(201).json({
         error: false,
@@ -125,8 +107,10 @@ app.delete("/pedidos/:id", async (req, res) => {
 });
 
 
+
+
 // /**
-//  * ATUALIZA por ID                        //NÃO SEI COMO ISSO FUNCIONA LALALALALALALLALAALALALALA
+//  * ATUALIZA por ID             
 //  */
 app.put("/pedidos/:id", async (req, res) => {
   const id = req.params.id;
