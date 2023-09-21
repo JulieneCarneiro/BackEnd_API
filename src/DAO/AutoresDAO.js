@@ -1,14 +1,13 @@
 import Autores from "../models/Autores.js";
 import DAO from "./DAO.js";
 
-//const CLIENTES_TABELA = "CLIENTES" // NAO ENTENDI PRA Q Q SERVE ISSO??????
 
 class AutoresDAO extends DAO{
     /**
      * INSERIR DADOS na tabela AUTORES
      * @param {Autores} data 
      */
-    ////////////////////// ESSE AQUI TA FUNCIONANDO AMÉM
+  
     static async inserirAutor(data){
         const dataValues = Object.values(data)
         const query = `
@@ -61,11 +60,11 @@ class AutoresDAO extends DAO{
      * @param {string} id 
      * @param {any} data 
     */
-    static async AtualizarAutorPorId(id, data) {
+    static async atualizarAutorPorId(id, data) {
       const query = `
-      UPDATE CLIENTES SET NOME = ?, PAIS = ?, LIVROS = ? WHERE ID = ?
+      UPDATE AUTORES SET NOME = ?, PAIS = ?, LIVROS = ? WHERE ID = ?
       `;
-      const values = [data.nome, data.pais, data.livros, id];
+      const values = [data.NOME, data.PAIS, data.LIVROS, id];
       await this.atualizarPorId(query, values);
 }
 
