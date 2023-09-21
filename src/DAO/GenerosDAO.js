@@ -35,7 +35,7 @@ class GenerosDAO extends DAO{
       * @param {string} id 
       * @returns {Generos}
       */
-    static async buscarGenerosPorId(id) {
+    static async buscarGeneroPorId(id) {
       const query = `
       SELECT * FROM GENEROS WHERE ID = ?
       `;
