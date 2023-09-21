@@ -63,18 +63,24 @@ class AutoresController {
 
 
     /**    
-    //* DELETA por ID       
+    //* DELETA por ID                  REVER O TRATAMENTO DE ERRO PARA EXCLUSÃO DE ID INVÁLIDO
     */
     app.delete("/autores/:id", async (req, res) => {
       const id = req.params.id;
-      const exists = await ValidacaoServicesAutor.validarExistenciaAutor(id);
-      if (exists) {
-        // se o autor existe, confirma
-        AutoresDAO.deletarAutorPorId(id);
-        res.status(200).json({ error: false, message: `Autor deletado com sucesso!` });
-      } else {
-        // Se o autor não existe, retorna erro 404
-        res.status(404).json({ error: true, message: `Autor não encontrado para o ID ${id}` });
+      try {
+        // verifica se o autor com o ID especificado existe
+        const exists = await ValidacaoServicesAutor.validarExistenciaAutor(id);
+          if (exists) {
+          // se o autor existe, executa a exclusão
+          await AutoresDAO.deletarAutorPorId(id);
+          res.status(200).json({ error: false, message: `Autor deletado com sucesso!` });
+        } else {
+          // se o autor não existe, retorna um erro 404
+          res.status(404).json({ error: true, message: `Autor não encontrado para o ID ${id}` });
+        }
+      } catch (error) {
+        // se ocorrer um erro durante a exclusão, retorna um erro 500
+        res.status(500).json({ error: true, message: `Ocorreu um erro durante a exclusão do autor` });
       }
     });
 
@@ -99,6 +105,33 @@ class AutoresController {
         res.status(409).json({ error: true, message: "Já existe um ID com o mesmo valor único" });
       }
     });
+
+    /**
+     * ATUALIZA TUDO pelo ID                          
+     */
+    app.put("/autores/:id", async (req, res) => {
+      const id = req.params.id;
+      const body = req.body; 
+      try {
+        // verifica se o autor existe
+        const exists = await ValidacaoServicesAutor.validarExistenciaAutor(id);
+        if (exists) {
+          // valida os campos fornecidos na solicitação
+          if (!ValidacaoServicesAutor.validaAutor(body.NOME, body.PAIS)) {
+            return res.status(400).json({ error: true, message: `Campos inválidos` });
+          }
+          const novoAutor = new Autores(body.ID, body.NOME, body.PAIS, body.LIVROS);
+          await AutoresDAO.atualizarAutorPorId(id, novoAutor);
+          res.status(204).json({ error: false, message: `Autor inserido com sucesso` });
+        } else {
+          res.status(404).json({ error: true, message: `Autor não encontrado` });
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
+      }
+    });
+    
   }
 }
 
