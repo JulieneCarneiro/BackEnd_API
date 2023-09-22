@@ -86,6 +86,54 @@ class LivrosDAO extends DAO{
       await this.atualizarPorId(query, values);
     }
 
+    /**
+     * ATUALIZA livro por ID (((PATCH)))
+     * @param {string} id 
+     * @param {any} data 
+    */
+    static async patchLivroPorId(id, data) {
+      const atualizarCampo = [];
+      const values = [];
+    
+      // verifica quais campos foram fornecidos pelo json
+      if (data.ID !== undefined) {
+        atualizarCampo.push('ID = ?');
+        values.push(data.ID);
+      }
+      if (data.TITULO !== undefined) {
+        atualizarCampo.push('TITULO = ?');
+        values.push(data.TITULO);
+      }
+      if (data.PRECO !== undefined) {
+        atualizarCampo.push('PRECO = ?');
+        values.push(data.PRECO);
+      }
+      if (data.AUTOR !== undefined) {
+        atualizarCampo.push('AUTOR = ?');
+        values.push(data.AUTOR);
+      }
+      if (data.GENERO !== undefined) {
+        atualizarCampo.push('GENERO = ?');
+        values.push(data.GENERO);
+      }
+      if (data.EDITORA !== undefined) {
+        atualizarCampo.push('EDITORA = ?');
+        values.push(data.EDITORA);
+      }
+      if (data.IDIOMA !== undefined) {
+        atualizarCampo.push('IDIOMA = ?');
+        values.push(data.IDIOMA);
+      }
+    
+      // constrói a consulta SQL dinamicamente com base nos campos fornecidos
+      const camposAtualizados = atualizarCampo.join(', ');
+      const query = `UPDATE LIVROS SET ${camposAtualizados} WHERE ID = ?`;
+      values.push(id);
+    
+      await this.atualizarPorId(query, values);
+    }
+    
+
 /**
    * Busca um livro pelo título.
    * @param {string} titulo 
