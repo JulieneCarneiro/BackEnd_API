@@ -30,8 +30,10 @@ class GenerosController {
         }
       }
     })
+
+    
     /**
-     * BUSCA GÊNEROS POR ID                      
+     * BUSCA GÊNEROS POR ID      FEITO                     
      */
     app.get("/generos/:id", async (req, res) => {
       const id = req.params.id;
@@ -92,29 +94,29 @@ class GenerosController {
           .json({ error: true, message: `Forneça um gênero` });
       }
     });
+    
+
     /**
-     * ATUALIZA TUDO PELO  ID                          
+     * ATUALIZA TUDO pelo ID                          
      */
-    app.put("/generos/:id", async (req, res) => {
-      const id = req.params.id;
-      const body = req.body;
-      try {
-        const exists = await ValidacaoServicesGeneros.validarExistenciaGenero(id);
-        if (exists) {
-          if (!ValidacaoServicesGeneros.validaGenero(body.NOME)) {
-            return res.status(400).json({ error: true, message: `Campo inválido` });
+    app.put("/generos/:id", async (req, res)=>{
+      const id = req.params.id
+      const body = req.body
+      const exists = await ValidacaoServicesGeneros.validarExistenciaGenero(id)
+      const isValid = ValidacaoServicesGeneros.validaNome(body.NOME)
+        if(exists){
+          if(isValid){
+            const generoAtualizado = new Generos(body.LIVROS, body.NOME)
+            GenerosDAO.AtualizarGeneroPorId(id, generoAtualizado)
+            res.status(204).json({error: false, message: `Gênero atualizado com sucesso!`})
+          } else {
+            res.status(400).json({error: true, message: `Campos inválidos`})
           }
-          const novoGenero = new Generos(body.ID, body.NOME, body.LIVROS);
-          await GenerosDAO.atualizarGeneroPorId(id, novoGenero);
-          res.status(204).json({ error: false, message: `Gênero inserido com sucesso!` });
-        } else {
-          res.status(404).json({ error: true, message: `Gênero não encontrado` });
-        }
-      } catch (error) {
-        console.error(error);
-        res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
-      }
-    });
+              
+          } else {
+              res.status(404).json({error: true, message: `Gênero não encontrado para o ID ${id}`})
+          }
+    })
   }
 }
 export default GenerosController;
