@@ -1,43 +1,5 @@
 import LivrosDAO from "../DAO/LivrosDAO.js";
 
-// class ValidacaoServicesLivros{
-//     /**
-//      * Método que valida a existencia do livro na base de dados
-//      * @param {string} id
-//      * @returns {boolean}
-//      */
-//     static validarExistenciaLivro(id){
-//         const pedido = LivrosDAO.buscarLivroPorId(id)
-//         if(pedido){
-//             return true
-//         } else {
-//             return false
-//         }
-//     }
-
-//     /**
-//      * Método de validação de titulo do livro
-//      * @param {string} titulo
-//      * @returns {boolean}
-//      */
-//     static validaTitulo(titulo){
-//         return typeof titulo == "string" && titulo.length > 2
-//     }
-
-//     /**
-//      * Método para validação de todos os campos fornecidos pelo cliente na entidade usuário
-//      * @param {string} nome
-//      * @param {string} email
-//      * @returns
-//      */
-//     static validaCamposLivro(titulo, pagamento){
-//         const isValid = this.validaTitulo(titulo) && this.validaPagamento(pagamento)
-//         return isValid
-//     }
-// }
-
-// export default ValidacaoServicesLivros
-
 class ValidacaoServicesLivros {
     /**
      * Método que valida a existência do livro na base de dados
@@ -48,7 +10,8 @@ class ValidacaoServicesLivros {
       const livro = await LivrosDAO.buscarLivroPorId(id);
       return livro ? true : false;
     }
-  
+
+
     /**
      * Método de validação de título do livro
      * @param {string} titulo 
@@ -68,21 +31,39 @@ class ValidacaoServicesLivros {
       return typeof preco === "number" && preco >= 0;
     }
 
-    
+    /**
+     * Método de validação de gênero do livro
+     * @param {string} genero 
+     * @returns {boolean}
+     */
+    static validaGenero(genero) {
+      return typeof genero === "string" && genero.length > 2;
+    }
+
+    /**
+     * Método de validação de idioma do livro
+     * @param {string} titulo 
+     * @returns {boolean}
+     */
+    static validaIdioma(idioma) {
+      return typeof idioma === "string" && idioma.length > 2;
+    }
+
+
     /**
      * Método para validação de todos os campos fornecidos para atualização de um livro
      * @param {string} titulo 
      * @param {number} preco 
+     * @param {string} genero 
+     * @param {string} idioma 
      * @returns {boolean}
      */
-    static validaCamposLivro(titulo, preco) {
-      const isValid = this.validaTitulo(titulo) && this.validaPreco(preco);
+    static validaCamposLivro(titulo, preco, genero, idioma) {
+      const isValid = this.validaTitulo(titulo) && this.validaPreco(preco)&& this.validaGenero(genero)&& this.validaIdioma(idioma);
       return isValid;
     }
-  
-    
-  }
-  
+}
+
   export default ValidacaoServicesLivros;
 
 // class ValidacaoLivros {
