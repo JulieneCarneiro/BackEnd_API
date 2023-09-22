@@ -29,7 +29,6 @@ class AutoresDAO extends DAO{
       return result;
     }
 
-
     /**
       * BUSCA pelo ID
       * @param {string} id 
@@ -49,11 +48,10 @@ class AutoresDAO extends DAO{
       */
     static async deletarAutorPorId(id) {
       const query = `
-      DELETE FROM AUTORES WHERE ID = ?
+      DELETE FROM AUTORES WHERE ID = ?;
       `;
-      await this.deletarPorId(query, [id]);
+      await this.deletarPorId(query, id);
     }
-
 
     /**
      * ATUALIZA pelo ID
@@ -64,9 +62,10 @@ class AutoresDAO extends DAO{
       const query = `
       UPDATE AUTORES SET NOME = ?, PAIS = ?, LIVROS = ? WHERE ID = ?
       `;
-      const values = [data.NOME, data.PAIS, data.LIVROS, id];
+      const values = [data.nome, data.pais, data.livros, id];
       await this.atualizarPorId(query, values);
 }
+    
 
 }
 

@@ -11,7 +11,7 @@ class GenerosDAO extends DAO{
     static async inserirGenero(data){
         const dataValues = Object.values(data)
         const query = `
-        INSERT INTO GENERO (LIVROS, NOME) VALUES (?,?)
+        INSERT INTO GENERO (ID, LIVROS, NOME) VALUES (?, ?, ?)
         `
         const result = await this.inserir(query, dataValues)
         return result
@@ -62,7 +62,7 @@ class GenerosDAO extends DAO{
     */
     static async AtualizarGeneroPorId(id, data) {
       const query = `
-      UPDATE GENEROS SET LIVROS = ?, NOME = ?, WHERE ID = ?
+      UPDATE GENEROS SET LIVROS = ?, NOME = ? WHERE ID = ?
       `;
       const values = [data.livros, data.nome, id];
       await this.atualizarPorId(query, values);
