@@ -1,12 +1,13 @@
 
-# Espaço das Letras - API
+# Espaço das Letras - API 📚
 
 Bem-vindos ao Espaço das Letras, o seu novo destino literário online. Nós somos uma pequena livraria/sebo apaixonada por livros e pela cidade de Curitiba, e estamos aqui para compartilhar histórias e conhecimento de forma acessível e conveniente. 
 
-## Descrição:
+## Descrição 🧾
 
 Nesse projeto foi criado uma API Rest para uma livraria, desenvolvido em Node.js com framework Express.
-## Requisitos:
+
+## Requisitos 🗝️
 
 Antes de começar, certifique-se de que as seguintes tecnologias estejam devidamente instaladas em sua máquina:
 
@@ -15,7 +16,7 @@ Antes de começar, certifique-se de que as seguintes tecnologias estejam devidam
 
 * [Node.js](https://nodejs.org/en)
 
-## Banco de Dados
+## Banco de Dados 📊
 
 Essas são as entidades do nosso banco de dados:
 
@@ -26,9 +27,7 @@ Essas são as entidades do nosso banco de dados:
 * Autores
 * Editoras 
 
-
-
-## Dependências:
+## Dependências ⛓️ 
 
 ```bash
    cors: "^2.8.5"
@@ -51,7 +50,7 @@ Essas são as entidades do nosso banco de dados:
 ```
 
 
-## Instalação:
+## Instalação 🔌
 
 Abra seu terminal e execute os comandos a seguir:
 
@@ -86,12 +85,7 @@ No terminal do VS Code:
   npm start
 ```
 
-
-
-
-
-
-## Exemplos de respostas
+## Exemplos de respostas 🗃️
 
 <!-- localhost:3000/pedidos/ -->
 
@@ -274,14 +268,14 @@ Saída
 "Autor deletado com sucesso!"
 
 ```
-## Referência
+## Referências 📌
 
  - [Express](https://expressjs.com/pt-br/)
  - [Sqlite3](https://www.sqlite.org/docs.html)
  - [Node.js](https://nodejs.org/en)
 - [Thunder Client](https://www.thunderclient.com/)
 
-## Autores
+## Autores 🖊️
 
 - **Juliene Carneiro** - [GitHub](https://github.com/JulieneCarneiro) - [LinkedIn](https://www.linkedin.com/in/juliene-s-carneiro/)
 
