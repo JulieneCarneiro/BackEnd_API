@@ -65,7 +65,7 @@ class LivrosDAO extends DAO{
       * DELETA livro por ID
       * @param {string} id 
       */
-    static async deletarLivrosPorId(id) {
+    static async deletarLivroPorId(id) {
       const query = `
       DELETE FROM LIVROS WHERE ID = ?
       `;
