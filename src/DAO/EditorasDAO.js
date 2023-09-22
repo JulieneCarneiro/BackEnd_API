@@ -1,14 +1,13 @@
 import Editoras from "../models/Editoras.js";
 import DAO from "./DAO.js";
 
-//const CLIENTES_TABELA = "CLIENTES" // NAO ENTENDI PRA Q Q SERVE ISSO??????
 
 class EditorasDAO extends DAO{
     /**
      * INSERIR DADOS na tabela AUTORES
      * @param {Editoras} data 
      */
-    ////////////////////// ESSE AQUI TA FUNCIONANDO AMÉM
+    
     static async inserirEditora(data){
         const dataValues = Object.values(data)
         const query = `
@@ -38,7 +37,7 @@ class EditorasDAO extends DAO{
       */
     static async buscarEditoraPorId(id) {
       const query = `
-      SELECT * FROM EDITORAS WHERE ID_EDITORA = ?
+      SELECT * FROM EDITORAS WHERE ID = ?
       `;
       const result = await this.buscarPorId(query, [id]);
       return result;
@@ -50,7 +49,7 @@ class EditorasDAO extends DAO{
       */
     static async deletarEditoraPorId(id) {
       const query = `
-      DELETE FROM EDITORAS WHERE ID_EDITORA = ?
+      DELETE FROM EDITORAS WHERE ID = ?
       `;
       await this.deletarPorId(query, [id]);
     }
@@ -63,7 +62,7 @@ class EditorasDAO extends DAO{
     */
     static async AtualizarEditoraPorId(id, data) {
       const query = `
-      UPDATE EDITORAS SET NOME = ?, EMAIL = ?, TELEFONE = ? WHERE ID_EDITORA = ?
+      UPDATE EDITORAS SET NOME = ?, EMAIL = ?, TELEFONE = ? WHERE ID = ?
       `;
       const values = [data.nome, data.email, data.telefone, id];
       await this.atualizarPorId(query, values);
