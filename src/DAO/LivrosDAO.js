@@ -7,11 +7,10 @@ class LivrosDAO extends DAO{
      * INSERE dados nos LIVROS
      * @param {Livros} data 
      */
-    ////////////////////// ESSE AQUI TA FUNCIONANDO TAOKEI   ////////MAS OLHAR SE PRECISA ATUALIZAR ASLGUMAS COISAS
     static async inserirLivro(data){
         const dataValues = Object.values(data)
         const query = `
-        INSERT INTO GENERO (TITULO, PRECO, AUTOR, GENERO, EDITORA, IDIOMA) VALUES (?,?,?,?,?,?) 
+        INSERT INTO LIVROS (ID, TITULO, PRECO, AUTOR, GENERO, EDITORA, IDIOMA) VALUES (?,?,?,?,?,?,?) 
         `
         const result = await this.inserir(query, dataValues)
         return result
@@ -81,9 +80,9 @@ class LivrosDAO extends DAO{
     */
     static async atualizarLivroPorId(id, data) {
       const query = `
-      UPDATE LIVROS SET TITULO = ?, PRECO = ? WHERE ID = ?
+      UPDATE LIVROS SET TITULO = ?, PRECO = ?, AUTOR = ?, GENERO = ?, EDITORA = ?, IDIOMA = ? WHERE ID = ?
       `;
-      const values = [data.TITULO, data.PRECO, id];
+      const values = [data.TITULO, data.PRECO, data.AUTOR, data.GENERO, data.EDITORA, data.IDIOMA, id];
       await this.atualizarPorId(query, values);
     }
 
