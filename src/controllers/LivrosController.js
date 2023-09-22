@@ -1,6 +1,7 @@
 import Livros from "../models/Livros.js";
 import LivrosDAO from "../DAO/LivrosDAO.js";
 import ValidacaoServicesLivros from "../services/LivrosServices.js";
+import ValidacaoServicesPedidos from "../services/PedidosServices.js";
 
 class LivrosController {
   /**
@@ -53,12 +54,10 @@ class LivrosController {
         }
       } else {
         // se o livro não existe, retorna um erro 404
-        res
-          .status(404)
-          .json({
-            error: true,
-            message: `Livro não encontrado para o ID ${id}`,
-          });
+        res.status(404).json({
+          error: true,
+          message: `Livro não encontrado para o ID ${id}`,
+        });
       }
     });
 
@@ -181,58 +180,71 @@ class LivrosController {
           res.status(400).json({ error: true, message: `Campos inválidos` });
         }
       } else {
-        res
-          .status(404)
-          .json({
-            error: true,
-            message: `Livro não encontrado para o ID ${id}`,
-          });
+        res.status(404).json({
+          error: true,
+          message: `Livro não encontrado para o ID ${id}`,
+        });
       }
     });
 
+    /**
+     * ATUALIZA parcialmente por ID
+     */
     app.patch("/livros/:id", async (req, res) => {
       const id = req.params.id;
       const body = req.body;
+      const exists = await ValidacaoServicesLivros.validarExistenciaLivro(id);
+      if (exists) {
+        // Verifique quais campos foram fornecidos no corpo da solicitação
+        if (
+          "ID" in body ||
+          "TITULO" in body ||
+          "PRECO" in body ||
+          "AUTOR" in body ||
+          "GENERO" in body ||
+          "EDITORA" in body ||
+          "IDIOMA" in body
+        ) {
+          const livroAtualizado = {};
 
-      try {
-        // Verifique se o livro existe
-        const livroExistente = await LivrosDAO.buscarLivroPorId(id);
-
-        if (!livroExistente) {
-          return res
-            .status(404)
+          if ("ID" in body) {
+            livroAtualizado.ID = body.ID;
+          }
+          if ("TITULO" in body) {
+            livroAtualizado.TITULO = body.TITULO;
+          }
+          if ("PRECO" in body) {
+            livroAtualizado.PRECO = body.PRECO;
+          }
+          if ("AUTOR" in body) {
+            livroAtualizado.AUTOR = body.AUTOR;
+          }
+          if ("GENERO" in body) {
+            livroAtualizado.GENERO = body.GENERO;
+          }
+          if ("EDITORA" in body) {
+            livroAtualizado.EDITORA = body.EDITORA;
+          }
+          if ("IDIOMA" in body) {
+            livroAtualizado.GENERO = body.GENERO;
+          }
+          await LivrosDAO.patchLivroPorId(id, livroAtualizado);
+          res
+            .status(204)
+            .json({ error: false, message: `Livro atualizado com sucesso!` });
+        } else {
+          res
+            .status(400)
             .json({
               error: true,
-              message: `Livro não encontrado para o id ${id}`,
+              message: `Nenhum campo válido fornecido para atualização`,
             });
         }
-
-        // Valide os campos fornecidos na solicitação
-        if (
-          !ValidacaoServicesLivros.validaCamposLivro(body.TITULO, body.PRECO)
-        ) {
-          return res
-            .status(400)
-            .json({ error: true, message: `Campos inválidos` });
-        }
-
-        // Atualize apenas as propriedades fornecidas na solicitação
-        if (body.TITULO) {
-          livroExistente.TITULO = body.TITULO;
-        }
-        if (body.PRECO) {
-          livroExistente.PRECO = body.PRECO;
-        }
-
-        // Salve as alterações no banco de dados
-        await LivrosDAO.atualizarLivroPorId(id, livroExistente);
-
-        res.status(204).json();
-      } catch (error) {
-        console.error(error);
-        res
-          .status(503)
-          .json({ error: true, message: `Servidor indisponível no momento` });
+      } else {
+        res.status(404).json({
+          error: true,
+          message: `Livro não encontrado para o ID ${id}`,
+        });
       }
     });
   }
