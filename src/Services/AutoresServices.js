@@ -54,8 +54,8 @@ class ValidacaoServicesAutor {
 * @param {string} pais
 * @returns 
 */
-    static validaAutor(nome, pais) {
-        const isValid = this.validaNome(nome) && this.validaPais(pais)
+    static validaAutor(nome, pais, livro) {
+        const isValid = this.validaNome(nome) && this.validaPais(pais) && this.validarExistenciaLivro(livro)
         return isValid
     }
 }
