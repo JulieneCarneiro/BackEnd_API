@@ -8,6 +8,7 @@ class LivrosController {
    * @param {Express} app
    */
   static rotas(app) {
+  
     /**
      * BUSCA TODOS os LIVROS
      */
@@ -22,7 +23,6 @@ class LivrosController {
             details: error.message,            // detalhes do erro?? pensar nisso!!!!!!!!
           });
         } else {
-          
           res.status(500).json({
             error: true,
             message: "Ocorreu um erro ao buscar os livros.",
@@ -31,21 +31,31 @@ class LivrosController {
       }
     });
 
-
-app.get("/livros/:id", async (req, res) => {
-  const id = req.params.id;
-  const resposta = await LivrosDAO.buscarLivroPorId(id);
-  if (resposta) {
-    res.status(200).json(resposta);
-  } else {
-    res
-      .status(404)
-      .json({
-        error: true,
-        message: `Livro com o id ${id} não encontrado`,
-      });
-  }
-});
+    /**
+     * BUSCA LIVROS por ID  FEITO
+     */
+    app.get("/livros/:id", async (req, res) => {
+      const id = req.params.id;
+      // verifica se o livro com o ID existe
+      const isValid = await ValidacaoServicesLivros.validarExistenciaLivro(id);
+      if (isValid) {
+        // se o livro existe, executa a busca
+        const resposta = await LivrosDAO.buscarLivroPorId(id);
+        if (resposta) {
+          // se encontrar o livro, retorna os dados dele
+          res.status(200).json(resposta);
+        } else {
+        // se não encontrar o livro (caso inesperado), retorna um erro 500
+        res.status(500).json({
+          error: true,
+          message: `Ocorreu um erro ao buscar o livro com o ID ${id}`,
+        });
+        }
+      } else {
+          // se o livro não existe, retorna um erro 404
+        res.status(404).json({ error: true, message: `Livro não encontrado para o ID ${id}` });
+      }
+    });
 
 /**
      * BUSCA pelo genero                        ///////////SEM VALIDAÇÃO TA FUNCIONANDOOOOOOOOOOOOO
@@ -96,12 +106,13 @@ app.delete("/livros/:id", async (req, res) => {
  */
 app.post("/livros", async (req, res) => {
   const body = Object.values(req.body);
-  const clienteModelado = new Clientes(...body);
+  const novoLivro = new Livros(...body);
+  const id = LivrosDAO
   try {
-    await ClientesDAO.inserirCliente(clienteModelado);
+    await LivrosDAO.inserirLivro(novoLivro);
     res.status(201).json({
       error: false,
-      message: "Cliente inserido com sucesso!",
+      message: `Livro inserido com sucesso, número do id ${id}`,
     });
   } catch (error) {
     res
@@ -113,15 +124,15 @@ app.post("/livros", async (req, res) => {
 // /**
 //  * ATUALIZA por ID                        //NÃO SEI COMO ISSO FUNCIONA LALALALALALALLALAALALALALA
 //  */
+
 app.put("/livro/:id", async (req, res) => {
   const id = req.params.id;
   const body = req.body;
-  const exists = await ValidacaoServicesLivros.validarExistenciaLivro(id);
-  // const isValid = ValidacaoServices.validaCamposUnidade(body.NOME, body.EMAIL, body.TELEFONE, body.ENDERECO);
+  const isValid = await ValidacaoServicesLivros.validarExistenciaLivro(id);
 
-      if (exists) {
-          const unidadeModelada = new Livros(body.TITULO, body.PRECO, body.AUTOR, body.GENERO, body.EDITORA, body.IDIOMA);
-          LivrosDAO.atualizarLivroPorId(id, unidadeModelada);
+      if (isValid) {
+          const novoLivro = new Livros(body.TITULO, body.PRECO, body.AUTOR, body.GENERO, body.EDITORA, body.IDIOMA);
+          LivrosDAO.atualizarLivroPorId(id, novoLivro);
           res.status(204).json({ error: false, message: `Livro inserido com sucesso`});
       } else {
           res.status(400).json({ error: true, message: `Campos inválidos` });
@@ -162,9 +173,6 @@ app.patch("/livros/:id", async (req, res) => {
     res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
   }
 });
-
-
-
 
 }}
 

@@ -8,9 +8,12 @@ class PedidosController {
    *
    * @param {Express} app
    */
+
+
   static rotas(app) {
+
     /**
-     * BUSCA TODOS os LIVROS
+     * BUSCA TODOS os PEDIDOS
      */
     app.get("/pedidos", async (req, res) => {
       try {
@@ -19,8 +22,8 @@ class PedidosController {
         if (error instanceof Error) {
           res.status(500).json({
             error: true,
-            message: "Nenhum pedido encontrado", //mas dai aqui tem q ter outra msg
-            details: error.message,            // detalhes do erro?? pensar nisso!!!!!!!!
+            message: "Nenhum pedido encontrado", 
+            details: error.message,            
           });
         } else {
           res.status(500).json({
@@ -31,23 +34,30 @@ class PedidosController {
       }
     });
 
+
     /**
-     * BUSCA pelo ID                    
+     * BUSCA pelo ID                FEITO    
      */
     app.get("/pedidos/:id", async (req, res) => {
       const id = req.params.id;
-    
-      try {
-        // Verifica se o pedido existe
-        const pedidoExistente = await PedidosDAO.buscarPedidoPorId(id);
-    
-        if (!pedidoExistente) {
-          return res.status(404).json({ error: true, message: `Pedido não encontrado para o id ${id}` });
+      // Verifica se o pedido com o ID existe
+      const isValid = await ValidacaoServicesPedidos.validarExistenciaPedido(id);
+      if (isValid) {
+        // se o pedido existe, executa a busca
+        const resposta = await PedidosDAO.buscarPedidoPorId(id);
+        if (resposta) {
+          // se encontrar o pedido, retorna os dados dele
+          res.status(200).json(resposta);
+        } else {
+          // se o pedido não existe, retorna um erro 404
+        res.status(404).json({ error: true, message: `Pedido não encontrado para o ID ${id}` });
         }
-    
-        res.status(200).json(pedidoExistente);
-      } catch (error) {
-        res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
+      } else {
+        // se não encontrar o pedido (caso inesperado), retorna um erro 500
+        res.status(500).json({
+          error: true,
+          message: `Ocorreu um erro ao buscar o pedido com o ID ${id}`,
+        });
       }
     });
     
