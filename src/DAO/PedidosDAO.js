@@ -55,22 +55,6 @@ class PedidosDAO extends DAO{
       return result;
     }
 
-      // /**
-      // * BUSCA pedidos por pelo NUMERO
-      // * @param {string} num_pedido 
-      // * @returns {Pedidos}
-      // */
-      // static async buscarPedidosPorNumero(num_pedido) {
-      //   const query = `
-      //   SELECT * FROM PEDIDOS WHERE NUM_PEDIDO = ?
-      //   `;
-      //   const result = await this.buscarPorId(query, [num_pedido]);
-      //   return result;
-      // }
-  
-
-
-
     /**
       * DELETA pedidos por ID
       * @param {string} id 
@@ -84,7 +68,7 @@ class PedidosDAO extends DAO{
 
 
     /**
-     * ATUALIZA genero por ID
+     * ATUALIZA pedido por ID
      * @param {string} id 
      * @param {any} data 
     */
@@ -97,6 +81,7 @@ class PedidosDAO extends DAO{
       const values = [data.CLIENTE, data.TITULO, data.QUANTIDADE, data.VALOR, data.PAGAMENTO, id];
       await this.atualizarPorId(query, values);
     }
+
   }
 
 export default PedidosDAO;
