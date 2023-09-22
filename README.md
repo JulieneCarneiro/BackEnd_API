@@ -87,14 +87,18 @@ No terminal do VS Code:
 
 ## Exemplos de respostas 🗃️
 
-<!-- localhost:3000/pedidos/ -->
 
 
-***POST - Rota: /pedidos***
+***POST - Rota:***
 
+```bash
+ http://localhost:3000/pedidos
+```
 A rota post cria um pedido.
 
 Entrada
+
+Copie o código json abaixo e insira no body da requisição http:
 
 ```
 {
@@ -115,7 +119,11 @@ Saída
 ```
 
 <!-- localhost:3000/generos/ -->
-***GET - Rota:/generos***
+***GET - Rota:*** 
+
+```bash
+ http://localhost:3000/generos
+```
 
 A rota get lista os gêneros.
 
@@ -156,12 +164,16 @@ Saída
 ]
 ```
 
-<!-- localhost:3000/livros/ -->
-***PATCH - Rota:/livros***
+
+***PATCH - Rota:***
+
+```bash
+ http://localhost:3000/livros/2
+```
 
 A rota patch modifica algum livro.
 
-No banco de dados:
+É importante destacar que no banco de dados, o livro com o ID 2 é exibido da seguinte forma:
 
 ```
   {
@@ -176,6 +188,8 @@ No banco de dados:
 
 ```
 Entrada
+
+Copie o código json abaixo e insira no body da requisição http:
 
 ```
   {
@@ -193,12 +207,16 @@ Saída
 "Livro alterado com sucesso!"
 ```
 
-<!-- localhost:3000/clientes/3 -->
-***PUT - Rota:/clientes***
+
+***PUT - Rota:***
+
+```bash
+  http://localhost:3000/clientes/3
+```
 
 A rota put modifica um cliente.
 
-No banco de dados:
+É importante destacar que no banco de dados, o cliente com o ID 3 é exibido da seguinte forma::
 ```
   {
     "ID": 3,
@@ -210,6 +228,9 @@ No banco de dados:
 ```
 
 Entrada
+
+Copie o código json abaixo e insira no body da requisição http:
+
 ```
   {
     "NOME": "JoelmaKalipiçon123",
@@ -225,12 +246,16 @@ Saída
 `Cliente atualizado com sucesso`
 ```
 
-<!-- localhost:3000/autores/1 -->
-***DELETE - Rota:/autores***
+
+***DELETE - Rota:***
+
+```bash
+  http://localhost:3000/clientes/3
+```
 
 A rota delete remove um autor.
 
-No banco de dados:
+É importante destacar que no banco de dados, os autores são exibidos da seguinte forma::
 ```
 [
   {
@@ -257,10 +282,12 @@ No banco de dados:
 
 Entrada
 
-```
 Digite a URL com o comando DELETE passando o ID do livro que você deseja excluir:
-localhost:3000/autores/1 
+
+```bash
+  http://localhost:3000/autores/1
 ```
+
 Saída
 
 ```
