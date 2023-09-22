@@ -8,7 +8,7 @@ class ClientesDAO extends DAO{
      * INSERE dados nos CLIENTES
      * @param {Clientes} data 
      */
-    ////////////////////// ESSE AQUI TA FUNCIONANDO TAOKEI
+
     static async inserirCliente(data){
         const dataValues = Object.values(data)
         const query = `
@@ -63,11 +63,12 @@ class ClientesDAO extends DAO{
     */
     static async atualizarClientePorId(id, data) {
       const query = `
-      UPDATE CLIENTES SET NOME = ?, EMAIL = ?, TELEFONE = ? WHERE ID = ?
+      UPDATE CLIENTES SET NOME = ?, EMAIL = ?, TELEFONE = ?, ENDERECO=?  WHERE ID = ?
       `;
-      const values = [data.nome, data.email, data.telefone, id];
+      const values = [data.nome, data.email, data.telefone, data.endereco, id];
       await this.atualizarPorId(query, values);
 }
+
 
 }
 
