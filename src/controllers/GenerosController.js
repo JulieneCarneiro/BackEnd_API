@@ -8,9 +8,8 @@ class GenerosController {
    * @param {Express} app
    */
   static rotas(app) {
-
     /**
-     * BUSCA TODOS GÊNEROS
+     * BUSCA TODOS OS GÊNEROS
      */
     app.get("/generos", async (req, res) => {
       try {
@@ -31,9 +30,8 @@ class GenerosController {
         }
       }
     })
-
     /**
-     * BUSCA pelo ID                      
+     * BUSCA GÊNEROS POR ID                      
      */
     app.get("/generos/:id", async (req, res) => {
       const id = req.params.id;
@@ -53,13 +51,16 @@ class GenerosController {
       }
     });
 
+
+
+
     /**    
     * DELETA GÊNEROS POR ID                     
     */
-    app.delete("/genero/:id", async (req, res) => {
+    app.delete("/generos/:id", async (req, res) => {
       const id = req.params.id;
+      const isValid = ValidacaoServicesGeneros.validarExistenciaGenero(id);
       try {
-        const isValid = await ValidacaoServicesGeneros.validarExistenciaGenero(id);
         if (isValid) {
           await GenerosDAO.deletarGeneroPorId(id);
           res.status(200).json({ error: false, massage: `Gênero com o ID ${id} deletado!` });
@@ -70,13 +71,11 @@ class GenerosController {
         res.status(500).json({ error: true, message: `Ocorreu um erro durante a exclusão do gênero` });
       }
     });
-
     /**
      * INSERE GÊNEROS                     
      */
     app.post("/generos", async (req, res) => {
       const body = req.body;
-
       if (!ValidacaoServicesGeneros.validarExistenciaGenero(body.NOME)) {
         return res.status(400).json({ error: true, message: `Campo inválido` });
       }
@@ -93,33 +92,29 @@ class GenerosController {
           .json({ error: true, message: `Forneça um gênero` });
       }
     });
-  }
-
-  /**
-   * ATUALIZA TUDO PELO  ID                          
-   */
+    /**
+     * ATUALIZA TUDO PELO  ID                          
+     */
     app.put("/generos/:id", async (req, res) => {
-  const id = req.params.id;
-  const body = req.body;
-
-  try {
-    const exists = await ValidacaoServicesGeneros.validarExistenciaGenero(id);
-
-    if (exists) {
-      if (!ValidacaoServicesGeneros.validaGenero(body.NOME)) {
-        return res.status(400).json({ error: true, message: `Campo inválido` });
+      const id = req.params.id;
+      const body = req.body;
+      try {
+        const exists = await ValidacaoServicesGeneros.validarExistenciaGenero(id);
+        if (exists) {
+          if (!ValidacaoServicesGeneros.validaGenero(body.NOME)) {
+            return res.status(400).json({ error: true, message: `Campo inválido` });
+          }
+          const novoGenero = new Generos(body.ID, body.NOME, body.LIVROS);
+          await GenerosDAO.atualizarGeneroPorId(id, novoGenero);
+          res.status(204).json({ error: false, message: `Gênero inserido com sucesso!` });
+        } else {
+          res.status(404).json({ error: true, message: `Gênero não encontrado` });
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
       }
-      const novoGenero = new Generos(body.ID, body.NOME, body.LIVROS);
-      await GenerosDAO.atualizarGeneroPorId(id, novoGenero);
-      res.status(204).json({ error: false, message: `Gênero inserido com sucesso!` });
-    } else {
-      res.status(404).json({ error: true, message: `Gênero não encontrado` });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(503).json({ error: true, message: `Servidor indisponível no momento` });
+    });
   }
-});
 }
-
 export default GenerosController;
