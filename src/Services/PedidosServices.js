@@ -35,7 +35,7 @@ class ValidacaoServicesPedidos{
     // Consulte o banco de dados para verificar se o título já existe
     const livro = await LivrosDAO.buscarLivroPorTitulo(titulo);
     return livro !== null;
-  }
+    }
 
     /**
      * Método de validação de pagamento
@@ -45,9 +45,7 @@ class ValidacaoServicesPedidos{
     static validaPagamento(pagamento) {
         const opcoesValidas = ["Boleto", "PIX", "Credito", "Débito"];
         return opcoesValidas.includes(pagamento);
-      }
-
-
+    }
 
     /**
      * Método para validação de todos os campos fornecidos pelo cliente na entidade usuário
