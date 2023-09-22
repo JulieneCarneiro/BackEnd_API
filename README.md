@@ -15,6 +15,19 @@ Antes de começar, certifique-se de que as seguintes tecnologias estejam devidam
 
 * [Node.js](https://nodejs.org/en)
 
+## Banco de Dados
+
+Essas são as entidades do nosso banco de dados:
+
+* Clientes
+* Pedidos
+* Livros 
+* Gêneros
+* Autores
+* Editoras 
+
+
+
 ## Dependências:
 
 ```bash
