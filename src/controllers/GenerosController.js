@@ -1,5 +1,5 @@
 import Generos from '../models/Generos.js'
-import GenerosDAO from '../DAO/GenerosDAO.js';
+import GenerosDAO from '../Repository/GenerosDAO.js';
 import ValidacaoServicesGeneros from '../Services/GenerosServices.js';
 
 class GenerosController {

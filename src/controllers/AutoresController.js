@@ -1,6 +1,6 @@
 import Autores from "../models/Autores.js"; 
-import AutoresDAO from "../DAO/AutoresDAO.js";
-import ValidacaoServicesAutor from "../services/AutoresServices.js";
+import AutoresDAO from "../Repository/AutoresDAO.js";
+import ValidacaoServicesAutor from "../Services/AutoresServices.js";
 
 class AutoresController {
   /**

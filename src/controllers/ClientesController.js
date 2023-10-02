@@ -1,6 +1,6 @@
 import Clientes from "../models/Clientes.js";
-import ClientesDAO from "../DAO/ClientesDAO.js";
-import ValidacaoServicesCliente from "../services/ClientesServices.js";
+import ClientesDAO from "../Repository/ClientesDAO.js";
+import ValidacaoServicesCliente from "../Services/ClientesServices.js";
 
 class ClientesController {
   /**

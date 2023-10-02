@@ -1,5 +1,5 @@
 import Livros from "../models/Livros.js";
-import LivrosDAO from "../DAO/LivrosDAO.js";
+import LivrosDAO from "../Repository/LivrosDAO.js";
 import ValidacaoServicesLivros from "../services/LivrosServices.js";
 import ValidacaoServicesPedidos from "../services/PedidosServices.js";
 
