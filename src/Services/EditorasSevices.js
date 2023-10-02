@@ -1,5 +1,5 @@
 import Editoras from "../models/Editoras.js";
-import EditorasDAO from "../DAO/EditorasDAO.js";
+import EditorasDAO from "../Repository/EditorasDAO.js";
 
 class ValidacaoServicesEditora {
   /**

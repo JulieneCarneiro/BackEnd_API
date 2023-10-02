@@ -1,5 +1,5 @@
-import AutoresDAO from "../DAO/AutoresDAO.js";
-import LivrosDAO from "../DAO/LivrosDAO.js";
+import AutoresDAO from "../Repository/AutoresDAO.js";
+import LivrosDAO from "../Repository/LivrosDAO.js";
 
 class ValidacaoServicesAutor {
   /**

@@ -1,5 +1,5 @@
-import PedidosDAO from "../DAO/PedidosDAO.js";
-import LivrosDAO from "../DAO/LivrosDAO.js";
+import PedidosDAO from "../Repository/PedidosDAO.js";
+import LivrosDAO from "../Repository/LivrosDAO.js";
 
 class ValidacaoServicesPedidos {
   /**

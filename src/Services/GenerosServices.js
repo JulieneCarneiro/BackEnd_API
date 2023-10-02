@@ -1,4 +1,4 @@
-import GenerosDAO from "../DAO/GenerosDAO.js";
+import GenerosDAO from "../Repository/GenerosDAO.js";
 
 class ValidacaoServicesGeneros {
   /**

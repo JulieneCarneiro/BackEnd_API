@@ -1,4 +1,4 @@
-import LivrosDAO from "../DAO/LivrosDAO.js";
+import LivrosDAO from "../Repository/LivrosDAO.js";
 
 class ValidacaoServicesLivros {
   /**
