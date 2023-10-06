@@ -1,8 +1,14 @@
-class Generos{
-    constructor(livros, nome){
-        this.livros = livros
-        this.nome = nome 
-}
-}
+import mongoose from "mongoose"
+
+
+const Generos = mongoose.model("Genero",{
+        livros : String,
+        nome : String
+})
+
 
 export default Generos
+
+
+
+

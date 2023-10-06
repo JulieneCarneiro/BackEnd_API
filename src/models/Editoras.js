@@ -1,9 +1,11 @@
-class Editoras{
-    constructor(nome, email, telefone){
-        this.nome = nome
-        this.email = email
-        this.telefone = telefone
-}
-}
+import mongoose from "mongoose"
+
+const Editoras = mongoose.model("Editora",{
+        nome : String,
+        email : String,
+        telefone : String
+})
 
 export default Editoras
+
+

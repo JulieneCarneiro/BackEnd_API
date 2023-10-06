@@ -1,9 +1,9 @@
-class Autores{
-    constructor(nome, pais, livros){
-        this.nome = nome
-        this.pais = pais
-        this.livros = livros 
-}
-}
+import mongoose from "mongoose"
+
+const Autores = mongoose.model("Autor", {
+        nome : String,
+        pais : String,
+        livros : String
+})
 
 export default Autores
