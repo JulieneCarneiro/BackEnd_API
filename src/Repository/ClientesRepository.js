@@ -8,12 +8,17 @@ class ClientesRepository {
   }
 
   static async buscarTodosOsClientes() {
-    const result = await RepositoryGeneral.buscar(Clientes);
+    const result = await RepositoryGeneral.buscarTodos(Clientes);
     return result;
   }
 
   static async buscarClientePorId(id) {
     const result = await RepositoryGeneral.buscarPorId(Clientes, id);
+    return result;
+  }
+
+  static async buscarClientePorNome(nome) {
+    const result = await RepositoryGeneral.buscarPorNome(Clientes, nome);
     return result;
   }
 
