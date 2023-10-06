@@ -1,72 +1,54 @@
-import ClientesDAO from "../Repository/ClientesDAO.js";
+import ClientesRepository from "../Repository/ClientesRepository.js"
 
-class ValidacaoServicesCliente {
-  /**
-   * Método que valida a existencia do usuário na base de dados
-   * @param {string} id
-   * @returns {boolean}
-   */
-  static validarExistenciaCliente(id) {
-    const cliente = ClientesDAO.buscarClientePorId(id);
-    if (cliente) {
-      return true;
-    } else {
-      return false;
+class ClientesServices {
+
+    static async validaNome(nome) {
+        const cliente = await ClientesRepository.buscarClientePorNome(nome);
+        if (!cliente && nome.length > 2)  {
+          return true;
+        } else {
+          throw new Error("Cliente já cadastrado.");
+        }
+      }
+    
+      static async validaEmail(email) {
+        const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i
+        if (regex.test(email)) {
+            const VerificaCliente = await ClientesRepository.buscarClientePorEmail(email)
+            if (VerificaCliente) {
+                throw new Error("Email já cadastrado.")
+            }
+            return true
+
+        }
+
+        throw new Error("Email inválido, favor rever a requisição.")
+
     }
-  }
 
-  /**
-   * Método de validação de nome
-   * @param {string} nome
-   * @returns {boolean}
-   */
-  static validaNome(nome) {
-    return typeof nome == "string" && nome.length > 2;
-  }
+    static validaTelefone(telefone) {
+        const tel = parseInt(telefone)
+        if (tel != telefone || telefone.length < 10 || telefone.length > 12) {
+            throw new Error("Telefone inválido, favor rever a requisição.")
+        }
 
-  /**
-   * Método para validação de email
-   * @param {string} email
-   * @returns {boolean}
-   */
-  static validaEmail(email) {
-    return typeof email == "string" && email.length > 2;
-  }
-
-  /**
-   * Método para validação de telefone
-   * @param {string} telefone
-   * @returns {boolean}
-   */
-  static validaTelefone(telefone) {
-    // Verifica se o telefone é uma string e tem um comprimento mínimo de 10 caracteres (assumindo que inclui o DDD)
-    return typeof telefone === "string" && telefone.length >= 10;
-  }
-  /**
-   * Método para validação do endereço
-   * @param {string} endereco
-   * @returns {boolean}
-   */
+        return true
+    }
+  
   static validaEndereco(endereco) {
     return endereco.length >= 5;
   }
 
-  /**
-   * Método para validação de todos os campos fornecidos pelo cliente na entidade usuário
-   * @param {string} nome
-   * @param {string} email
-   * @param {string} telefone
-   * @param {string} endereco
-   * @returns
-   */
-  static validaCamposCliente(nome, email, telefone, endereco) {
-    const isValid =
-      this.validaNome(nome) &&
-      this.validaEmail(email) &&
-      this.validaTelefone(telefone) &&
-      this.validaEndereco(endereco);
-    return isValid;
+  static async validaCamposCliente(nome, email, telefone, endereco) {
+    try {
+       await ClientesServices.validaNome(nome) 
+       ClientesServices.validaEmail(email) 
+       ClientesServices.validaTelefone(telefone) 
+       ClientesServices.validaEndereco(endereco);
+    } catch (error) {
+        throw error
+    } 
   }
 }
 
-export default ValidacaoServicesCliente;
+export default ClientesServices;

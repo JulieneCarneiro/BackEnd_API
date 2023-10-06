@@ -1,62 +1,49 @@
-import Editoras from "../models/Editoras.js";
-import EditorasDAO from "../Repository/EditorasDAO.js";
+import EditorasRepository from "../Repository/EditorasRepository.js"
 
-class ValidacaoServicesEditora {
-  /**
-   * Método que valida a existencia do gênero na base de dados
-   * @param {string} id
-   * @returns {boolean}
-   */
-  static validarExistenciaEditora(id) {
-    const genero = EditorasDAO.buscarEditoraPorId(id);
-    if (genero) {
-      return true;
-    } else {
-      return false;
+class EditorasServices {
+
+    static async validaNome(nome) {
+        const editora = await EditorasRepository.buscarEditoraPorNome(nome);
+        if (!editora && nome.length > 2) {
+            return true;
+        } else {
+            throw new Error("Editora já cadastrada.");
+        }
     }
-  }
 
-  /**
-   * Método de validação de nome
-   * @param {string} nome
-   * @returns {boolean}
-   */
-  static validaNome(nome) {
-    return typeof nome == "string" && nome.length > 2;
-  }
+    static async validaEmail(email) {
+        const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i
+        if (regex.test(email)) {
+            const VerificaEditora = await EditorasRepository.buscarEditoraPorEmail(email)
+            if (VerificaEditora) {
+                throw new Error("Email já cadastrado.")
+            }
+            return true
 
-  /**
-   * Método para validação de email
-   * @param {string} email
-   * @returns {boolean}
-   */
-  static validaEmail(email) {
-    return typeof email == "string" && email.length > 2;
-  }
+        }
 
-  /**
-   * Método para validação de telefone
-   * @param {string} telefone
-   * @returns {boolean}
-   */
-  static validaTelefone(telefone) {
-    // Verifica se o telefone é uma string e tem um comprimento mínimo de 10 caracteres (assumindo que inclui o DDD)
-    return typeof telefone === "string" && telefone.length >= 10;
-  }
+        throw new Error("Email inválido, favor rever a requisição.")
 
-  /**
-   * Método para validação de todos os campos
-   * @param {string} nome
-   * @param {string} email
-   * @param {string} telefone
-   * @returns
-   */
-  static validaCamposEditora(nome, email, telefone) {
-    const isValid =
-      this.validaNome(nome) &&
-      this.validaEmail(email) &&
-      this.validaTelefone(telefone);
-    return isValid;
-  }
+    }
+
+    static validaTelefone(telefone) {
+        const tel = parseInt(telefone)
+        if (tel != telefone || telefone.length < 10 || telefone.length > 12) {
+            throw new Error("Telefone inválido, favor rever a requisição.")
+        }
+
+        return true
+    }
+   
+    static async validaCamposEditora(nome, email, telefone) {
+        try {
+            await EditorasServices.validaNome(nome) 
+                EditorasServices.validaEmail(email) 
+                EditorasServices.validaTelefone(telefone);
+        } catch (error) {
+            throw error
+        }
+    }
 }
-export default ValidacaoServicesEditora;
+
+export default EditorasServices;

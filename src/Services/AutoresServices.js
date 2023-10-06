@@ -1,66 +1,47 @@
-import AutoresDAO from "../Repository/AutoresDAO.js";
-import LivrosDAO from "../Repository/LivrosDAO.js";
 
-class ValidacaoServicesAutor {
-  /**
-   * Método que valida a existencia do autor na base de dados
-   * @param {string} id
-   * @returns {boolean}
-   */
-  static validarExistenciaAutor(id) {
-    const autor = AutoresDAO.buscarAutorPorId(id);
-    if (autor) {
+import AutoresRepository from "../Repository/AutoresRepository.js";
+// import LivrosRepository from "../Repository/LivrosRepository.js";
+
+class AutoresServices {
+
+  static async validaNome(nome) {
+    const autor = await AutoresRepository.buscarAutorPorNome(nome);
+    if (!autor && nome.length > 2) {
       return true;
     } else {
-      return false;
+      throw new Error("Autor já cadastrado.");
     }
   }
 
-  /**
-   * Método de validação de nome
-   * @param {string} nome
-   * @returns {boolean}
-   */
-  static validaNome(nome) {
-    return typeof nome == "string" && nome.length > 2;
-  }
 
-  /**
-   * Método de validação de pais
-   * @param {string} pais
-   * @returns {boolean}
-   */
   static validaPais(pais) {
-    return typeof pais == "string" && pais.length > 2;
-  }
-
-  /**
-   * Método que valida a existencia do livro na base de dados
-   * @param {string} id
-   * @returns {boolean}
-   */
-  static validarExistenciaLivro(id) {
-    const livro = LivrosDAO.buscarLivroPorId(id);
-    if (livro) {
-      return true;
-    } else {
-      return false;
+    if (typeof pais == "string" && pais.length > 2){
+      return true
     }
+    throw new Error("País inválido")
   }
 
-  /**
-   * Método para validação de todos os campos fornecidos na entidade autores
-   * @param {string} nome
-   * @param {string} pais
-   * @returns
-   */
-  static validaAutor(nome, pais, livro) {
-    const isValid =
-      this.validaNome(nome) &&
-      this.validaPais(pais) &&
-      this.validarExistenciaLivro(livro);
-    return isValid;
+
+  // static async validarExistenciaLivro(id) {
+  //   const livro = await LivrosRepository.buscarLivroPorId(id);
+  //   if (!livro) {
+  //     return true;
+  //   } else {
+  //     throw new Error("Livro já cadastrado")
+  //   }
+  // }
+
+
+  static async validaCamposAutor( nome, pais) {
+   try {
+    await AutoresServices.validaNome(nome)
+    AutoresServices.validaPais(pais) 
+    // await AutoresServices.validarExistenciaLivro(id);
+    
+   } catch (error) {
+    throw error
+   }
   }
 }
 
-export default ValidacaoServicesAutor;
+export default AutoresServices;
