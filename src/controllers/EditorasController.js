@@ -1,100 +1,85 @@
-import Editoras from "../models/Editoras.js"; 
-import EditorasDAO from "../Repository/EditorasDAO.js";
-import ValidacaoServicesEditora from "../services/EditorasSevices.js";
+import EditorasRepository from "../Repository/EditorasRepository.js";
+import EditorasServices from "../Services/EditorasSevices.js"
 
 class EditorasController {
-  /**
-   * Método para centralização de rotas no controller
-   * @param {Express} app
-   */
   static rotas(app) {
-    
-    /**
-     * BUSCA TUDO
-     */
-    app.get("/editoras", async (req, res) => {
-      const editoras = await EditorasDAO.buscarTodasAsEditoras();
-      res.status(200).json(editoras);
+
+    app.post("/editoras", async (req, res) => {
+      try {
+        await EditorasServices.validaCamposEditora(req.body.nome, req.body.email, req.body.telefone)
+
+        const editora = req.body
+
+        const inserir = await EditorasRepository.inserirEditora(editora)
+
+        res.status(201).json(inserir)
+      } catch (error) {
+        if (error.message == "Editora já cadastrada.") {
+          res.status(406).json({ message: error.message })
+        }
+
+        res.status(400).json({ message: error.message })
+      }
     });
 
-    /**
-     * BUSCA pelo ID  FEITO                    
-     */
-  app.get("/editoras/:id", async (req, res) => {
-    const id = req.params.id;
-    // Verifica se a editora com o ID existe
-    const isValid = await ValidacaoServicesEditora.validarExistenciaEditora(id);
-    if (isValid) {
-      // se a editora existe, executa a busca
-      const resposta = await EditorasDAO.buscarEditoraPorId(id);
-      if (resposta) {
-        // se encontrar a editora, retorna os dados dele
-        res.status(200).json(resposta);
-      } else {
-        // se o autor não existe, retorna um erro 404
-      res.status(404).json({ error: true, message: `Autor não encontrado para o ID ${id}` });
+    app.get("/editoras", async (req, res) => {
+      try {
+        const editoras = await EditorasRepository.buscarTodosAsEditoras();
+        res.status(200).json(editoras)
+      } catch (error) {
+        res.status(404).json(error.message)
       }
-    } else {
-      // se não encontrar a editora (caso inesperado), retorna um erro 500
-      res.status(500).json({
-        error: true,
-        message: `Ocorreu um erro ao buscar o autor com o ID ${id}`,
-      });
-    }
-  });
+    });
 
-    /**    
-    //* DELETA por ID                     
-    */
+
+    app.get("/editoras/:id", async (req, res) => {
+      try {
+        const editora = await EditorasRepository.buscarEditoraPorId(req.params.id)
+        if (!editora._id) {
+          throw new Error("Editora não encontrada para esse id")
+        }
+        res.status(200).json(editora)
+
+      } catch (error) {
+        res.status(404).json({ message: error.message, id: req.params.id })
+      }
+    });
+
+
+    app.put("/editoras/:id", async (req, res) => {
+      const id = req.params.id
+      const body = Object.entries(req.body)
+      try {
+        const editora = req.body
+        if (!editora._id) {
+          throw new Error("Editora não encontrada para esse id")
+        }
+        body.forEach((elemento) => editora[elemento[0]] = elemento[1])
+
+        delete editora._id
+
+        EditorasServices.validaCamposEditora(editora.nome, editora.email, editora.telefone)
+        const resposta = await EditorasRepository.atualizaEditoraPorId(id, editora)
+
+        res.status(200).json(resposta)
+      } catch (error) {
+        res.status(400).json({ message: error.message, id })
+      }
+    })
+
     app.delete("/editoras/:id", async (req, res) => {
       const id = req.params.id;
-      EditorasDAO.deletarEditoraPorId(id);
-      res.status(200).json({ error: false });
-    });
-
-    /**
-     * INSERE                      
-     */
-    app.post("/editoras", async (req, res) => {
-      const body = req.body;
-      // Validação dos campos das editoras
-      if (!ValidacaoServicesEditora.validaCamposEditora(body)) {
-        return res.status(400).json({ error: true, message: "Campos inválidos" });
-      }
-      const novaEditora = new Editoras(body.NOME, body.EMAIL, body.TELEFONE); // Substitua esses campos pelos campos reais das editoras
       try {
-        await EditorasDAO.inserirEditora(novaEditora);
-        res.status(201).json({
-          error: false,
-          message: "Editora inserida com sucesso!",
-        });
+        const editora = await EditorasRepository.buscarEditoraPorId(id);
+        if (!editora._id) {
+          throw new Error("Editora não encontrada")
+        }
+        const response = await EditorasRepository.deletarEditoraPorId(id)
+        res.status(200).json(response)
       } catch (error) {
-        res.status(503).json({ error: true, message: "Servidor indisponível no momento" });
+        res.status(404).json({ error: true, message: `Editora não encontrado para o ID ${id}` });
       }
     });
-
-
-    /**
-     * ATUALIZA TUDO pelo ID                          
-     */
-    app.put("/editoras/:id", async (req, res)=>{
-      const id = req.params.id
-      const body = req.body
-      const exists = await ValidacaoServicesEditora.validarExistenciaEditora(id)
-      const isValid = ValidacaoServicesEditora.validaCamposEditora(body.NOME, body.EMAIL, body.TELEFONE)
-        if(exists){
-          if(isValid){
-            const editoraAtualizada = new Editoras(body.NOME, body.EMAIL, body.TELEFONE)
-            EditorasDAO.AtualizarEditoraPorId(id, editoraAtualizada)
-            res.status(204).json({message: `Deu certoooo`})
-          } else {
-            res.status(400).json({error: true, message: `Campos inválidos`})
-          }
-              
-          } else {
-              res.status(404).json({error: true, message: `Editora não encontrada para o id ${id}`})
-          }
-    })
   }
 }
 
