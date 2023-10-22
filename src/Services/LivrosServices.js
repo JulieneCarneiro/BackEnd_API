@@ -4,14 +4,8 @@ class LivrosServices {
 
 
     static async validaTitulo(titulo) {
-        const nomeTitulo = await LivrosRepository.buscarLivroPorTitulo(titulo);
-        if (!nomeTitulo && typeof titulo === "string" && titulo.length > 2) {
-            return true;
-        } else {
-            throw new Error("Título já cadastrado.");
-        }
+         typeof titulo === "string" && titulo.length > 2
     }
-
 
     static validaPreco(preco) {
         return typeof preco === "number" && preco >= 0;
