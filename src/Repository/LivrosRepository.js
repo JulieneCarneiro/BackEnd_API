@@ -9,7 +9,7 @@ class LivrosRepository {
   }
 
   static async buscarTodosOsLivros() {
-    const result = await RepositoryGeneral.buscar(Livros);
+    const result = await RepositoryGeneral.buscarTodos(Livros);
     return result;
   }
   
