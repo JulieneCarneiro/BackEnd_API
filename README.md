@@ -3,6 +3,8 @@
 
 Bem-vindos ao Espaço das Letras, o seu novo destino literário online. Nós somos uma pequena livraria/sebo apaixonada por livros e pela cidade de Curitiba, e estamos aqui para compartilhar histórias e conhecimento de forma acessível e conveniente. 
 
+* [Repositório FrontEnd do Projeto](https://github.com/Letiti4/React-Module5)
+
 ## Descrição 🧾
 
 Nesse projeto foi criado uma API Rest para uma livraria, desenvolvido em Node.js com framework Express. A integração com o MongoDB, utilizando a biblioteca Mongoose, permite o armazenamento e recuperação de dados de forma otimizada.
