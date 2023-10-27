@@ -3,12 +3,12 @@ import RepositoryGeneral from "./RepositoryGeneral.js";
 
 class LivrosRepository {
   static async inserirLivro(livro) {
-    const response = await RepositoryGeneral.inserir(Livros, livro);
+    const response = await RepositoryGeneral.create(Livros, livro);
     return response;
   }
 
   static async buscarTodosOsLivros() {
-    const result = await RepositoryGeneral.buscarTodos(Livros);
+    const result = await RepositoryGeneral.findAll(Livros);
     return result;
   }
   

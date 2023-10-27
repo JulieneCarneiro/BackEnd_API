@@ -3,7 +3,7 @@ import RepositoryGeneral from "./RepositoryGeneral.js";
 
 class PedidosRepository {
   static async inserirPedido(pedido) {
-    const response = await RepositoryGeneral.inserir(Pedidos, pedido);
+    const response = await RepositoryGeneral.create(Pedidos, pedido);
     return response;
   }
 
