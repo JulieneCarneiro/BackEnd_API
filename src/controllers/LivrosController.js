@@ -5,23 +5,25 @@ class LivrosController {
   static rotas(app) {
 
 
-    app.post("/livros", async (req, res) => {
+    app.get("/livros", async (req, res) => {
       try {
-        await LivrosServices.validaCamposLivro(req.body.titulo, req.body.preco, req.body.idioma)
-
-        const livro = req.body
-
-        const inserir = await LivrosRepository.inserirLivro(livro)
-
-        res.status(201).json(inserir)
-      } catch (error) {
-        if (error.message == "Livro já cadastrado.") {
-          res.status(406).json({ message: error.message })
-        }
-
-        res.status(400).json({ message: error.message })
+          const livros = await LivrosRepository.buscarTodosOsLivros()
+          res.status(200).json(livros)
+      } catch (erro) {
+          res.status(404).json(erro.message)
       }
-    });
+  })
+
+  app.post("/livros", async (req, res) => {
+    try {
+        LivrosServices.validaCamposLivro(req.body.titulo, req.body.preco, req.body.idioma);
+        const livro = req.body;
+        const inserir = await LivrosRepository.inserirLivro(livro);
+        res.status(201).json(inserir);
+    } catch (erro) {
+        res.status(400).json({ message: erro.message });
+    }
+});
 
     app.get("/livros", async (req, res) => {
       try {
@@ -86,3 +88,22 @@ class LivrosController {
 }
 
 export default LivrosController;
+
+
+// app.post("/livros", async (req, res) => {
+    //   try {
+    //     await LivrosServices.validaCamposLivro(req.body.titulo, req.body.preco, req.body.idioma)
+
+    //     const livro = req.body
+
+    //     const inserir = await LivrosRepository.inserirLivro(livro)
+
+    //     res.status(201).json(inserir)
+    //   } catch (error) {
+    //     if (error.message == "Livro já cadastrado.") {
+    //       res.status(406).json({ message: error.message })
+    //     }
+
+    //     res.status(400).json({ message: error.message })
+    //   }
+    // });
