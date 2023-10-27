@@ -7,8 +7,9 @@ const Livros = mongoose.model("Livro",{
         generos : String,
         editora : String,
         idioma : String,
-        capa : String,
-        estado: String
+        estado: String,
+        descricao: String ,
+        capa : String
 })
 
 export default Livros
