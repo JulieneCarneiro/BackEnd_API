@@ -1,5 +1,4 @@
 import Livros from "../models/Livros.js";
-import Generos from "../models/Generos.js"
 import RepositoryGeneral from "./RepositoryGeneral.js";
 
 class LivrosRepository {
@@ -22,11 +21,6 @@ class LivrosRepository {
       const result = await RepositoryGeneral.buscarPorId(Livros, id);
       return result;
     }
-
-    static async buscarLivroPorGenero(nome) {
-        const result = await RepositoryGeneral.buscarPorChave(Generos, "nome", nome);
-        return result;
-      }
   
   static async deletarLivroPorId(id) {
     const result = await RepositoryGeneral.deletarPorId(Livros, id)

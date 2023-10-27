@@ -3,11 +3,8 @@ import cors from "cors";
 import {config} from "dotenv"
 import mongoose from "mongoose";
 import ClientesController from "./src/controllers/ClientesController.js"
-import AutoresController from "./src/controllers/AutoresController.js"
 import LivrosController from "./src/controllers/LivrosController.js";
 import PedidosController from "./src/controllers/PedidosController.js";
-import GenerosController from "./src/controllers/GenerosController.js";
-import EditorasController from './src/controllers/EditorasController.js'
 
 config()
 const app = express()
@@ -29,9 +26,6 @@ mongoose.connect(`mongodb+srv://${USER_DB}:${PASSWORD}@${CLUSTER}.${DATABASE}.mo
 })
 .catch((e)=>console.log(e.message))
 
-AutoresController.rotas(app)
 ClientesController.rotas(app)
-EditorasController.rotas(app)
-GenerosController.rotas(app)
 LivrosController.rotas(app)
 PedidosController.rotas(app)
