@@ -1,15 +1,23 @@
 import mongoose from "mongoose";
 
 class RepositoryGeneral {
-  static async inserir(EntidadeMongo, input) {
-    await EntidadeMongo.create(input);
-    return { Sucesso: "Registro inserido com sucesso" };
-  }
+  
 
-  static async buscarTodos(EntidadeMongo) {
-    const response = await EntidadeMongo.find();
-    return response;
-  }
+  static async create(EntidadeMongo, input){
+    try { 
+    await EntidadeMongo.create(input)
+    return {Sucesso: "Sucesso no registro!"}
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
+}
+
+static async findAll(EntidadeMongo){
+  const response = await EntidadeMongo.find()
+  return response
+}
 
   static async buscarPorId(EntidadeMongo, id) {
     const response = await EntidadeMongo.find({ _id: id });
@@ -32,8 +40,11 @@ class RepositoryGeneral {
   }
 
   static async atualizarPorId(EntidadeMongo, id, input) {
-    await EntidadeMongo.updateOne({ _id: id }, input);
+    try {await EntidadeMongo.updateOne({ _id: id }, input);
     return { Message: "Registo atualizado com sucesso", id };
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
