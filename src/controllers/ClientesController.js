@@ -5,8 +5,6 @@ import Clientes from "../models/Clientes.js";
 class ClientesController {
     static rotas(app) {
 
-       
-
         app.get("/clientes", async (req, res) => {
             try {
                 const clientes = await ClientesRepository.buscarTodosClientes()
@@ -15,7 +13,6 @@ class ClientesController {
                 res.status(404).json(erro.message)
             }
         })
-
 
         app.get("/clientes/:id", async (req, res) => {
             try {
@@ -31,14 +28,14 @@ class ClientesController {
 
         app.post("/clientes", async (req, res) => {
             try {
-              ClientesServices.validaCamposCliente(req.body.nome, req.body.endereco, req.body.telefone, req.body.email);
-              const cliente = req.body;
-              const inserir = await ClientesRepository.criarCliente(cliente);
-              res.status(201).json(inserir);
+                ClientesServices.validaCamposCliente(req.body.nome, req.body.endereco, req.body.telefone, req.body.email);
+                const cliente = req.body;
+                const inserir = await ClientesRepository.criarCliente(cliente);
+                res.status(201).json(inserir);
             } catch (erro) {
-              res.status(400).json({ message: erro.message });
+                res.status(400).json({ message: erro.message });
             }
-          });
+        });
 
 
         app.put("/clientes/:id", async (req, res) => {
@@ -46,10 +43,9 @@ class ClientesController {
             const body = Object.entries(req.body)
             try {
                 const cliente = req.body
-                if (!cliente._id) {
-                    throw new Error("Cliente não encontrado para esse id")
-                    console.error();
-                }
+                // if (!cliente._id) {
+                //     throw new Error("Cliente não encontrado para esse id")
+                // }
                 body.forEach((elemento) => cliente[elemento[0]] = elemento[1])
                 delete cliente._id
                 ClientesServices.validaCamposCliente(cliente.nome, cliente.pais, cliente.livros)
@@ -60,19 +56,19 @@ class ClientesController {
             }
         })
 
-        // app.put("/cliente/:id", async (req, res) => {
-        //     const id = req.params.id
-		// 	const body = Object.entries(req.body)
-		// 	const valido = await  ClientesServices.validaCamposCliente(req.body.nome, req.body.endereco, req.body.telefone, req.body.email)
-		// 	if (valido) {
-		// 		await ClientesRepository.atualizarClientePorId(id, cliente)
-		// 		res.status(200).json({ message: "Cliente atualizado com sucesso" })
-		// 	} else {
-		// 		res.status(404).json({ message: "Cliente não encontrado" })
-		// 	}
-        // })
+        app.patch("/clientes/:id", async (req, res) => {
+            const id = req.params.id
+            const entries = Object.entries(req.body)
+            try {
+                const cliente = req.body
+                await ClientesServices.validaCamposCliente(entries)
+                const resposta = await ClientesRepository.atualizaClientePorId(id, cliente)
+                res.status(200).json(resposta)
+            } catch (erro) {
+                res.status(400).json({ message: erro.message, id })
+            }
+        })
 
-        
         app.delete("/clientes/:id", async (req, res) => {
             const id = req.params.id;
             try {
