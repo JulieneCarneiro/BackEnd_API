@@ -37,28 +37,6 @@ class ClientesController {
             }
         });
 
-        // app.put("/clientes/:id", async (req, res) => {
-        //     const id = req.params.id
-        //     const body = Object.entries(req.body)
-        //     try {
-        //         if (!body || !Array.isArray(body)) {
-        //         throw new Error("Corpo da solicitação inválido");
-        //         }
-        //         const cliente = req.body
-        //         // if (!cliente._id) {
-        //         //     throw new Error("Cliente não encontrado para esse id")
-        //         // }
-        //         body.forEach((elemento) => cliente[elemento[0]] = elemento[1])
-        //         delete cliente._id
-        //         ClientesServices.validaCamposCliente(cliente.nome, cliente.pais, cliente.livros)
-        //         const resposta = await ClientesRepository.atualizarClientePorId(id, cliente)
-        //         res.status(200).json(resposta)
-        //     } catch (error) {
-        //         res.status(400).json({ message: error.message, id })
-        //     }
-        // })
-
-        
         app.patch("/clientes/:id", async (req, res) => {
             try {
                 const cliente = await ClientesRepository.buscarClientePorId(req.params.id)
@@ -66,7 +44,7 @@ class ClientesController {
                     throw new Error("ID do cliente não encontrado")
                 }
                 const data = req.body
-                if (data._id || data.CPF || data.__v){
+                if (data._id || data.__v){
                     throw new Error("Contém um atributo que não pode ser alterado")
                 }
                 if (data.nome){
