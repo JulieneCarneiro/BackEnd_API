@@ -28,7 +28,7 @@ class ClientesController {
 
         app.post("/clientes", async (req, res) => {
             try {
-                ClientesServices.validaCamposCliente(req.body.nome, req.body.endereco, req.body.telefone, req.body.email);
+                // ClientesServices.validaCamposCliente(req.body.nome, req.body.endereco, req.body.telefone, req.body.email);
                 const cliente = req.body;
                 const inserir = await ClientesRepository.criarCliente(cliente);
                 res.status(201).json(inserir);
