@@ -141,7 +141,7 @@ Saída
 ***GET - Rota:*** 
 
 ```bash
- http://localhost:3000/
+ http://localhost:3000/livros
 ```
 
 A rota get lista os livros.
@@ -200,83 +200,46 @@ Saída
 ***PATCH - Rota:***
 
 ```bash
- http://localhost:3000/livros/2
+ http://localhost:3000/livros/653c49c51c288ad2181a0e7d
 ```
 
 A rota patch modifica algum livro.
 
-É importante destacar que no banco de dados, o livro com o ID 2 é exibido da seguinte forma:
+É importante destacar que no banco de dados, o livro com o ID 653c49c51c288ad2181a0e7d é exibido da seguinte forma:
 
 ```
   {
-    "ID": 2,
-    "TITULO": "A deusa do desamor",
-    "PRECO": 26.9,
-    "AUTOR": 2,
-    "GENERO": "ROMANCE",
-    "EDITORA": 2,
-    "IDIOMA": "Portugues"
-  }
+    "_id": "653c49c51c288ad2181a0e7d",
+    "titulo": "1984",
+    "preco": "R$24,90",
+    "autor": "George Orwell",
+    "generos": "Distopia",
+    "editora": "Companhia das Letras",
+    "idioma": "Inglês",
+    "estado": "Usado",
+    "descricao": "1984, escrito por George Orwell, é um clássico da literatura de distopia. A história se passa em um mundo totalitário controlado pelo Partido, onde a liberdade individual é suprimida e a manipulação da verdade é constante. O livro segue Winston Smith, um homem que desafia o sistema opressor em busca da verdade e da liberdade.",
+    "capa": "https://m.media-amazon.com/images/I/61HtBosDhwL._AC_UF1000,1000_QL80_.jpg",
+    "__v": 0
+  }
 
 ```
 Entrada
 
-Copie o código json abaixo e insira no body da requisição http:
+Copie o código json abaixo e insira no body da requisição http para atualizar o preço:
 
 ```
-  {
-    "TITULO": "OFERTA: A deusa do desamor",
-    "PRECO": 20.0,
-    "AUTOR": 2,
-    "GENERO": "ROMANCE",
-    "EDITORA": 2,
-    "IDIOMA": "Portugues"
-  }
+{  
+  "preco": "R$26,90"
+  }
 ```
 
 Saída
 ```
-"Livro alterado com sucesso!"
+"message": "Livro atualizado com sucesso"
 ```
 
 
-***PUT - Rota:***
 
-```bash
-  http://localhost:3000/clientes/3
-```
-
-A rota put modifica um cliente.
-
-É importante destacar que no banco de dados, o cliente com o ID 3 é exibido da seguinte forma::
-```
-  {
-    "ID": 3,
-    "NOME": "Joelma Kalipiçon",
-    "EMAIL": "jojokali@yahoo.com",
-    "TELEFONE": "41 99356-1478",
-    "ENDERECO": "Rua Jose Arruda, 398 - Bairro: Solidão"
-  }
-```
-
-Entrada
-
-Copie o código json abaixo e insira no body da requisição http:
-
-```
-  {
-    "NOME": "JoelmaKalipiçon123",
-    "EMAIL": "jojokali@yahoo.com",
-    "TELEFONE": "41 99356-1478",
-    "ENDERECO": "Rua Jose Arruda, 398 - Bairro: Solidão"
-  }
-```
-
-Saída
-
-```
-`Cliente atualizado com sucesso`
-```
 
 
 ***DELETE - Rota:***
@@ -287,44 +250,23 @@ Saída
 
 A rota delete remove um autor.
 
-É importante destacar que no banco de dados, os autores são exibidos da seguinte forma::
-```
-[
-  {
-    "ID": 1,
-    "NOME": "Carlos Duhigg",
-    "PAIS": "Brasil",
-    "LIVROS": 1
-  },
-  {
-    "ID": 2,
-    "NOME": "Julia ZZagonel",
-    "PAIS": "Brasil",
-    "LIVROS": 2
-  },
-  {
-    "ID": 3,
-    "NOME": "Emma Liord",
-    "PAIS": "Estados Unidos",
-    "LIVROS": 3
-  }...
-]
-``` 
-
 
 Entrada
 
 Digite a URL com o comando DELETE passando o ID do livro que você deseja excluir:
 
 ```bash
-  http://localhost:3000/autores/1
+   http://localhost:3000/livros/653e898784dbbe1955f7c267
 ```
 
 Saída
 
 ```
 
-"Autor deletado com sucesso!"
+ {
+  "Message": "Registo deletado com sucesso",
+  "id": "653e7f932c50a97292c3ece9"
+}
 
 ```
 ## Referências 📌
